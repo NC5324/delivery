@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/delivery.iml" filepath="$PROJECT_DIR$/delivery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/delivery-backend/delivery-backend.iml" filepath="$PROJECT_DIR$/delivery-backend/delivery-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/delivery-ui/delivery-ui.iml" filepath="$PROJECT_DIR$/delivery-ui/delivery-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/delivery-backend/familyTree-backend.iml" filepath="$PROJECT_DIR$/delivery-backend/familyTree-backend.iml" />
+    </modules>
+  </component>
+</project>
