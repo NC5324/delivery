@@ -1,27 +1,26 @@
 package com.nnmpizza.delivery.payload.request;
 
+import java.util.Set;
+
 public class TransactionRequest {
-    private Long id;
-    private Long member_id;
 
-    public TransactionRequest(Long id, Long member_id) {
-        this.id = id;
-        this.member_id = member_id;
+    private Long memberID;
+
+    private Set<Long> products;
+
+    public Set<Long> getProducts() {
+        return products;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setProducts(Set<Long> products) {
+        this.products = products;
     }
 
     public Long getMemberID() {
-        return member_id;
+        return memberID;
     }
 
-    public void setMemberID(Long member_id) {
-        this.member_id = member_id;
+    public void setMemberID(Long memberID) {
+        this.memberID = memberID;
     }
 }

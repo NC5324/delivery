@@ -1,8 +1,11 @@
 package com.nnmpizza.delivery.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nnmpizza.delivery.payload.request.TransactionRequest;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "transaction")
@@ -16,17 +19,15 @@ public class Transaction {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    public Transaction(Member member) {
-        this.member = member;
-    }
+    @ManyToMany
+    //@JsonIgnore
+    @JoinTable(name = "transaction_product",
+            joinColumns = @JoinColumn(name="transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> products = new HashSet<>();
 
     public Transaction() {
 
-    }
-
-    public Transaction(TransactionRequest transactionRequest) {
-        id = transactionRequest.getId();
-        member.id = transactionRequest.getMemberID();
     }
 
     public Long getId() {
@@ -43,5 +44,13 @@ public class Transaction {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

@@ -1,22 +1,17 @@
 package com.nnmpizza.delivery.controllers;
-
-import com.nnmpizza.delivery.models.Member;
 import com.nnmpizza.delivery.models.Product;
 import com.nnmpizza.delivery.models.Transaction;
-import com.nnmpizza.delivery.payload.request.MemberRequest;
-import com.nnmpizza.delivery.payload.request.ProductRequest;
 import com.nnmpizza.delivery.payload.request.TransactionRequest;
+import com.nnmpizza.delivery.payload.response.MessageResponse;
 import com.nnmpizza.delivery.repository.MemberRepository;
+import com.nnmpizza.delivery.repository.ProductRepository;
 import com.nnmpizza.delivery.repository.TransactionRepository;
-import org.apache.coyote.Response;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.Valid;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -25,34 +20,49 @@ public class TransactionController {
 
     final TransactionRepository transactionRepository;
     final MemberRepository memberRepository;
+    final ProductRepository productRepository;
 
-    public TransactionController(TransactionRepository transactionRepository, MemberRepository memberRepository) {
+    public TransactionController(TransactionRepository transactionRepository, MemberRepository memberRepository, ProductRepository productRepository) {
         this.transactionRepository = transactionRepository;
         this.memberRepository = memberRepository;
+        this.productRepository = productRepository;
     }
 
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR') or hasRole('USER') or hasRole('GUEST')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
     public List<Transaction> getAllTransactions(){
         return transactionRepository.findAll();
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR') or hasRole('USER') or hasRole('GUEST')")
-    public ResponseEntity<?> saveTransaction(@RequestBody TransactionRequest transactionRequest){
-        boolean isNew = transactionRequest.getId() == null;
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> saveTransaction(@Valid @RequestBody TransactionRequest transactionRequest){
+        System.out.println("is null??? "+transactionRequest.getMemberID());
 
-        Transaction newTransaction = new Transaction(transactionRequest);
-        transactionRepository.save(newTransaction);
+        /*TODO: check if exists by memberID and edit instead of adding new (one order per person)*/
+        var transaction = new Transaction();
+        var member = memberRepository.findById(transactionRequest.getMemberID());
+        if(member.isPresent()) {
+            transaction.setMember(member.get());
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("Product", newTransaction);
-        if(!isNew){
-            response.put("message", "Успешно редактиран.");
-        } else {
-            response.put("message", "Успешно записан.");
+            Set<Long> productIDs = transactionRequest.getProducts();
+            Set<Product> products = new HashSet<>();
+
+            if (productIDs != null) {
+                productIDs.forEach(productID -> {
+                    if (productRepository.findById(productID).isPresent()) {
+                        products.add(productRepository.findById(productID).get());
+                    }
+                });
+            }
+
+            transaction.setProducts(products);
+            transactionRepository.save(transaction);
+
+            return ResponseEntity.ok(new MessageResponse("Transaction registered successfully!"));
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        return ResponseEntity.ok(new MessageResponse("Error trying to register transaction"));
     }
 }
