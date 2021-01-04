@@ -37,6 +37,8 @@ public class ProductController {
 
         Product newProduct = new Product(productRequest);
 
+        ProductRepository.save(newProduct);
+
         Map<String, Object> response = new HashMap<>();
         response.put("Product", newProduct);
         if(!isNew){

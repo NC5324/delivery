@@ -785,7 +785,7 @@ false Z
 false Zulu
 false posixrules
 </TimeZones>
-      <StartupTime>1608113955</StartupTime>
+      <StartupTime>1609689743</StartupTime>
     </root>
     <database id="2" parent="1" name="city">
       <ObjectId>16394</ObjectId>
@@ -802,12 +802,13 @@ false posixrules
     <database id="5" parent="1" name="pizza">
       <ObjectId>41013</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>681</IntrospectionStateNumber>
+      <IntrospectionStateNumber>699</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|41025|41027|1
 sequence|table|41033|41035|1
 sequence|table|41059|41061|1
 sequence|table|41014|41016|1
+sequence|table|41090|41092|1
 </Relations>
     </database>
     <database id="6" parent="1" name="postgres">
@@ -864,7 +865,7 @@ sequence|table|41014|41016|1
       <Comment>standard public schema</Comment>
       <StateNumber>276</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>682</IntrospectionStateNumber>
+      <IntrospectionStateNumber>700</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="19" parent="5" name="heap">
@@ -958,37 +959,53 @@ sequence|table|41014|41016|1
       <StateNumber>660</StateNumber>
       <DataType>integer|0s</DataType>
     </sequence>
-    <table id="35" parent="18" name="member">
+    <sequence id="35" parent="18" name="transaction_id_seq">
+      <ObjectId>41090</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>693</StateNumber>
+      <DataType>integer|0s</DataType>
+    </sequence>
+    <table id="36" parent="18" name="member">
       <ObjectId>41016</ObjectId>
       <Owner>postgres</Owner>
       <StateNumber>667</StateNumber>
     </table>
-    <table id="36" parent="18" name="member_role">
+    <table id="37" parent="18" name="member_role">
       <ObjectId>41070</ObjectId>
       <Owner>postgres</Owner>
       <StateNumber>667</StateNumber>
     </table>
-    <table id="37" parent="18" name="product">
+    <table id="38" parent="18" name="product">
       <ObjectId>41035</ObjectId>
       <Owner>postgres</Owner>
       <StateNumber>663</StateNumber>
     </table>
-    <table id="38" parent="18" name="product_topping">
+    <table id="39" parent="18" name="product_topping">
       <ObjectId>41085</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>668</StateNumber>
+      <StateNumber>697</StateNumber>
     </table>
-    <table id="39" parent="18" name="role">
+    <table id="40" parent="18" name="role">
       <ObjectId>41061</ObjectId>
       <Owner>postgres</Owner>
       <StateNumber>667</StateNumber>
     </table>
-    <table id="40" parent="18" name="topping">
+    <table id="41" parent="18" name="topping">
       <ObjectId>41027</ObjectId>
       <Owner>postgres</Owner>
       <StateNumber>663</StateNumber>
     </table>
-    <column id="41" parent="35" name="id">
+    <table id="42" parent="18" name="transaction">
+      <ObjectId>41092</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>696</StateNumber>
+    </table>
+    <table id="43" parent="18" name="transaction_product">
+      <ObjectId>41098</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>696</StateNumber>
+    </table>
+    <column id="44" parent="36" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -996,73 +1013,73 @@ sequence|table|41014|41016|1
       <DefaultExpression>nextval(&apos;member_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="42" parent="35" name="username">
+    <column id="45" parent="36" name="username">
       <Position>2</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>658</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="43" parent="35" name="password">
+    <column id="46" parent="36" name="password">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>658</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="44" parent="35" name="email">
+    <column id="47" parent="36" name="email">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
       <StateNumber>658</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="45" parent="35" name="first_name">
+    <column id="48" parent="36" name="first_name">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>658</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="46" parent="35" name="last_name">
+    <column id="49" parent="36" name="last_name">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>658</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="47" parent="35" name="phone">
+    <column id="50" parent="36" name="phone">
       <Position>7</Position>
       <DataType>varchar(10)|0s</DataType>
       <StateNumber>658</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="48" parent="35" name="Member_pkey">
+    <index id="51" parent="36" name="Member_pkey">
       <ObjectId>41023</ObjectId>
       <StateNumber>658</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="49" parent="35" name="Member_pkey">
+    <key id="52" parent="36" name="Member_pkey">
       <ObjectId>41024</ObjectId>
       <StateNumber>658</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>Member_pkey</UnderlyingIndexName>
     </key>
-    <column id="50" parent="36" name="member_id">
+    <column id="53" parent="37" name="member_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>665</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="51" parent="36" name="role_id">
+    <column id="54" parent="37" name="role_id">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>665</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="52" parent="36" name="member_role_pkey">
+    <index id="55" parent="37" name="member_role_pkey">
       <ObjectId>41073</ObjectId>
       <StateNumber>665</StateNumber>
       <ColNames>member_id
@@ -1070,7 +1087,7 @@ role_id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="53" parent="36" name="member_role_pkey">
+    <key id="56" parent="37" name="member_role_pkey">
       <ObjectId>41074</ObjectId>
       <StateNumber>665</StateNumber>
       <ColNames>member_id
@@ -1078,7 +1095,7 @@ role_id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>member_role_pkey</UnderlyingIndexName>
     </key>
-    <foreign-key id="54" parent="36" name="fk_member_role_member">
+    <foreign-key id="57" parent="37" name="fk_member_role_member">
       <ObjectId>41075</ObjectId>
       <StateNumber>667</StateNumber>
       <ColNames>member_id</ColNames>
@@ -1088,7 +1105,7 @@ role_id</ColNames>
       <RefKeyName>Member_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="55" parent="36" name="fk_member_role_role">
+    <foreign-key id="58" parent="37" name="fk_member_role_role">
       <ObjectId>41080</ObjectId>
       <StateNumber>667</StateNumber>
       <ColNames>role_id</ColNames>
@@ -1098,7 +1115,7 @@ role_id</ColNames>
       <RefKeyName>role_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="56" parent="37" name="id">
+    <column id="59" parent="38" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1106,59 +1123,59 @@ role_id</ColNames>
       <DefaultExpression>nextval(&apos;product_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="57" parent="37" name="name">
+    <column id="60" parent="38" name="name">
       <Position>2</Position>
       <DataType>varchar(100)|0s</DataType>
       <StateNumber>661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="58" parent="37" name="type">
+    <column id="61" parent="38" name="type">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
       <StateNumber>661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="59" parent="37" name="description">
+    <column id="62" parent="38" name="description">
       <Position>4</Position>
       <DataType>varchar|0s</DataType>
       <StateNumber>661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="60" parent="37" name="price">
+    <column id="63" parent="38" name="price">
       <Position>5</Position>
       <DataType>real|0s</DataType>
       <StateNumber>661</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <index id="61" parent="37" name="product_pkey">
+    <index id="64" parent="38" name="product_pkey">
       <ObjectId>41042</ObjectId>
       <StateNumber>661</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="62" parent="37" name="product_pkey">
+    <key id="65" parent="38" name="product_pkey">
       <ObjectId>41043</ObjectId>
       <StateNumber>661</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>product_pkey</UnderlyingIndexName>
     </key>
-    <column id="63" parent="38" name="product_id">
+    <column id="66" parent="39" name="product_id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>668</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="64" parent="38" name="topping_id">
+    <column id="67" parent="39" name="topping_id">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>668</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="65" parent="38" name="product_topping_pkey">
+    <index id="68" parent="39" name="product_topping_pkey">
       <ObjectId>41088</ObjectId>
       <StateNumber>668</StateNumber>
       <ColNames>product_id
@@ -1166,7 +1183,7 @@ topping_id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="66" parent="38" name="product_topping_pkey">
+    <key id="69" parent="39" name="product_topping_pkey">
       <ObjectId>41089</ObjectId>
       <StateNumber>668</StateNumber>
       <ColNames>product_id
@@ -1174,7 +1191,27 @@ topping_id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>product_topping_pkey</UnderlyingIndexName>
     </key>
-    <column id="67" parent="39" name="id">
+    <foreign-key id="70" parent="39" name="fk_product_topping_product">
+      <ObjectId>41113</ObjectId>
+      <StateNumber>697</StateNumber>
+      <ColNames>product_id</ColNames>
+      <RefTableId>41035</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>product</RefTableName>
+      <RefKeyName>product_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="71" parent="39" name="fk_product_topping_topping">
+      <ObjectId>41118</ObjectId>
+      <StateNumber>697</StateNumber>
+      <ColNames>topping_id</ColNames>
+      <RefTableId>41027</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>topping</RefTableName>
+      <RefKeyName>topping_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="72" parent="40" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1182,27 +1219,27 @@ topping_id</ColNames>
       <DefaultExpression>nextval(&apos;role_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="68" parent="39" name="name">
+    <column id="73" parent="40" name="name">
       <Position>2</Position>
       <DataType>varchar|0s</DataType>
       <StateNumber>664</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="69" parent="39" name="role_pkey">
+    <index id="74" parent="40" name="role_pkey">
       <ObjectId>41068</ObjectId>
       <StateNumber>664</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="70" parent="39" name="role_pkey">
+    <key id="75" parent="40" name="role_pkey">
       <ObjectId>41069</ObjectId>
       <StateNumber>664</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>role_pkey</UnderlyingIndexName>
     </key>
-    <column id="71" parent="40" name="id">
+    <column id="76" parent="41" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1210,31 +1247,120 @@ topping_id</ColNames>
       <DefaultExpression>nextval(&apos;topping_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
-    <column id="72" parent="40" name="name">
+    <column id="77" parent="41" name="name">
       <Position>2</Position>
       <DataType>varchar(100)|0s</DataType>
       <StateNumber>660</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="73" parent="40" name="type">
+    <column id="78" parent="41" name="type">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
       <StateNumber>660</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="74" parent="40" name="topping_pkey">
+    <index id="79" parent="41" name="topping_pkey">
       <ObjectId>41031</ObjectId>
       <StateNumber>660</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="75" parent="40" name="topping_pkey">
+    <key id="80" parent="41" name="topping_pkey">
       <ObjectId>41032</ObjectId>
       <StateNumber>660</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>topping_pkey</UnderlyingIndexName>
     </key>
+    <column id="81" parent="42" name="id">
+      <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>693</StateNumber>
+      <DefaultExpression>nextval(&apos;transaction_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="82" parent="42" name="member_id">
+      <Position>2</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>693</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="83" parent="42" name="transaction_pkey">
+      <ObjectId>41096</ObjectId>
+      <StateNumber>693</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+    </index>
+    <key id="84" parent="42" name="transaction_pkey">
+      <ObjectId>41097</ObjectId>
+      <StateNumber>693</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>transaction_pkey</UnderlyingIndexName>
+    </key>
+    <foreign-key id="85" parent="42" name="fk_transaction_member">
+      <ObjectId>41123</ObjectId>
+      <StateNumber>698</StateNumber>
+      <ColNames>member_id</ColNames>
+      <RefTableId>41016</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>member</RefTableName>
+      <RefKeyName>Member_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="86" parent="43" name="transaction_id">
+      <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>694</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="87" parent="43" name="product_id">
+      <Position>2</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>694</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="88" parent="43" name="transaction_product_pkey">
+      <ObjectId>41101</ObjectId>
+      <StateNumber>695</StateNumber>
+      <ColNames>transaction_id
+product_id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+    </index>
+    <key id="89" parent="43" name="transaction_product_pkey">
+      <ObjectId>41102</ObjectId>
+      <StateNumber>695</StateNumber>
+      <ColNames>transaction_id
+product_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>transaction_product_pkey</UnderlyingIndexName>
+    </key>
+    <foreign-key id="90" parent="43" name="fk_transaction_product_transaction">
+      <ObjectId>41103</ObjectId>
+      <StateNumber>696</StateNumber>
+      <ColNames>transaction_id</ColNames>
+      <RefTableId>41092</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>transaction</RefTableName>
+      <RefKeyName>transaction_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="91" parent="43" name="fk_transaction_product_product">
+      <ObjectId>41108</ObjectId>
+      <StateNumber>696</StateNumber>
+      <ColNames>product_id</ColNames>
+      <RefTableId>41035</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>product</RefTableName>
+      <RefKeyName>product_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
   </database-model>
 </dataSource>
