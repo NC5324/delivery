@@ -1,6 +1,7 @@
 package com.nnmpizza.delivery.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nnmpizza.delivery.payload.request.ProductRequest;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -35,6 +36,14 @@ public class Product {
         this.description = description;
         this.type = type;
         this.price = price;
+    }
+
+    public Product(ProductRequest productRequest){
+        this.id = productRequest.getId();
+        this.name = productRequest.getName();
+        this.description = productRequest.getDescription();
+        this.type = productRequest.getType();
+        this.price = productRequest.getPrice();
     }
 
     public Product () {
