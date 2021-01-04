@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/ProfilePage'
+import Register from '../views/Register'
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
     component: Profile
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '*',
     redirect: '/'
   }
@@ -41,7 +47,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/', '/profile', '/about', '/login']
+  const publicPages = ['/', '/profile', '/about', '/login', '/register']
   const authRequired = !publicPages.includes(to.path)
   const loggedIn = localStorage.getItem('user')
   if (authRequired && !loggedIn) {

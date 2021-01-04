@@ -1,7 +1,7 @@
 <template>
   <div class="center-screen top">
     <b-card class="login-card">
-      <b-form @submit="onSubmit" :state="loginSuccess" v-if="show">
+      <b-form :state="loginSuccess" v-if="show">
         <b-form-group
           id="input-group-1"
           label="Username:"
@@ -25,12 +25,13 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-invalid-feedback style="margin-bottom: 10px; font-style: bold;" :state="loginSuccess">
+        <b-form-invalid-feedback style="margin-bottom: 10px; font-weight: bold;" :state="loginSuccess">
           Bad credentials. Try again.
         </b-form-invalid-feedback>
         <b-form-valid-feedback>
         </b-form-valid-feedback>
-        <b-button type="submit" variant="primary">Login</b-button>
+        <b-button @click="onSubmit" variant="primary">Login</b-button>
+        <b-button style="margin-left: 10px;" @click="requestRegister" variant="primary">Register</b-button>
       </b-form>
     </b-card>
   </div>
@@ -44,9 +45,8 @@ export default {
   data () {
     return {
       user: new User('', ''),
-      message: '',
       show: true,
-      loginSuccess: true
+      loginSuccess: null
     }
   },
   computed: {
@@ -75,6 +75,9 @@ export default {
             error.toString()
         }
       )
+    },
+    requestRegister () {
+      this.$router.push('/register')
     }
   }
 }
