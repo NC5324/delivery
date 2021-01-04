@@ -1,5 +1,7 @@
 package com.nnmpizza.delivery.models;
 
+import com.nnmpizza.delivery.payload.request.TransactionRequest;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +22,11 @@ public class Transaction {
 
     public Transaction() {
 
+    }
+
+    public Transaction(TransactionRequest transactionRequest) {
+        id = transactionRequest.getId();
+        member.id = transactionRequest.getMemberID();
     }
 
     public Long getId() {

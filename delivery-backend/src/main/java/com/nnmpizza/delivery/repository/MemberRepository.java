@@ -2,6 +2,7 @@ package com.nnmpizza.delivery.repository;
 
 import com.nnmpizza.delivery.models.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
