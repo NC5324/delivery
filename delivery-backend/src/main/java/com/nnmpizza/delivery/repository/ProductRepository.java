@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<Member> findByName(String name);
+    Optional<Product> findByName(String name);
 
     Boolean existsByName(String name);
 
@@ -25,10 +25,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "LOWER(p.description) " +
             "LIKE :#{#description == null || #description.isEmpty()? '%' : '%'+#description+'%'} AND " +
             "LOWER(p.type) " +
-            "LIKE :#{#type == null || #type.isEmpty()? '%' : '%'+#type+'%'} AND " +
-            "CONCAT(:price, '') " +
-            "LIKE :#{#price == null || #price.isEmpty()? '%' : '%'+#price+'%'}")
-    Page<Product> findPageProducts(Pageable pageRequest, String name, String description, String type, Double price);
+            "LIKE :#{#type == null || #type.isEmpty()? '%' : '%'+#type+'%'}")
+    Page<Product> findPageProducts(Pageable pageRequest, String name, String description, String type);
 
     Optional<Product> findPersonById(Long id);
 }

@@ -59,15 +59,13 @@ public class ProductController {
                                             @RequestParam(value = "perPage", defaultValue = "5") int perPage,
                                             @RequestParam String name,
                                             @RequestParam String description,
-                                            @RequestParam String type,
-                                            @RequestParam Double price){
+                                            @RequestParam String type){
 
         Pageable pageRequest = PageRequest.of(currentPage-1, perPage);
-        ProductRequest productRequest = new ProductRequest(name, description, type, price);
-        Page<Product> Products = ProductRepository.findPageProducts(pageRequest, name.toLowerCase(), description.toLowerCase(), type.toLowerCase(), price);
+        Page<Product> Products = ProductRepository.findPageProducts(pageRequest, name.toLowerCase(), description.toLowerCase(), type.toLowerCase());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("Products", Products.getContent());
+        response.put("products", Products.getContent());
         response.put("currentPage", Products.getNumber()+1);
         response.put("totalItems", Products.getTotalElements());
         response.put("totalPages", Products.getTotalPages());
