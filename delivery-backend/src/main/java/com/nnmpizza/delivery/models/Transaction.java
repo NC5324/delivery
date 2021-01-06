@@ -19,15 +19,16 @@ public class Transaction {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    @ManyToMany
-    //@JsonIgnore
-    @JoinTable(name = "transaction_product",
-            joinColumns = @JoinColumn(name="transaction_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "transaction")
+    private Set<Order> orders = new HashSet<>();
 
     public Transaction() {
 
+    }
+
+    public Transaction(Member member){
+        this.member = member;
     }
 
     public Long getId() {
@@ -46,11 +47,12 @@ public class Transaction {
         this.member = member;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }
