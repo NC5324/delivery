@@ -21,16 +21,25 @@
     <ul>
       <li v-for="(role,index) in currentUser.roles" :key="index">{{role}}</li>
     </ul>
+    <strong>Количка:</strong>
+    <ul>
+      <li v-for="(product,index) in shoppingCart" :key="index">{{product}}</li>
+    </ul>
     <b-button @click="handleLogout" variant="danger">Logout</b-button>
+    <b-button style="margin-left: 10px" @click="test" size="lg" variant="dark">Delete all orders</b-button>
   </div>
 </template>
 
 <script>
+import OrderService from '../services/order-service'
 export default {
   name: 'Profile',
   computed: {
     currentUser () {
       return this.$store.state.auth.user
+    },
+    shoppingCart () {
+      return JSON.parse(localStorage.getItem('basket'))
     }
   },
   methods: {
@@ -47,6 +56,9 @@ export default {
             error.toString()
         }
       )
+    },
+    test () {
+      OrderService.deleteAllOrders()
     }
   }
 }

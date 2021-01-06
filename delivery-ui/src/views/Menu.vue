@@ -24,8 +24,8 @@
           </td>
         </template>
 
-        <template v-slot:cell(actions)>
-          <b-button size="sm">Add to cart</b-button>
+        <template v-slot:cell(actions)="row">
+          <b-button @click="addToCart(row.item.id)" size="sm">Add to cart</b-button>
         </template>
       </b-table>
 
@@ -50,6 +50,7 @@
 
 <script>
 import ProductService from '../services/product-service'
+import OrderItem from '../models/orderItem'
 export default {
   name: 'Menu',
   data () {
@@ -96,13 +97,13 @@ export default {
         }
       )
     },
-    deletePerson (id) {
-      ProductService.deleteProductById(id).then(
-        response => {
-          this.message = response.data
-          this.searchProducts()
-        }
-      )
+    addToCart (id) {
+      let items = JSON.parse(localStorage.getItem('basket'))
+      if (!items) {
+        items = []
+      }
+      items.push(new OrderItem(id, 1))
+      localStorage.setItem('basket', JSON.stringify(items))
     }
   }
 }

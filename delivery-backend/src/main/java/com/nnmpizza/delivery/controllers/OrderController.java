@@ -35,13 +35,21 @@ public class OrderController {
 
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('MODERATOR')")
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
 
+    @DeleteMapping("/purge")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<?> deleteAllOrders(){
+        orderRepository.deleteAllInBatch();
+        return ResponseEntity.ok("Deleted all order entries");
+    }
+
+
     @PostMapping("/save")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> saveOrder(@RequestBody OrderRequest orderRequest){
         var member = memberRepository.findById(orderRequest.getMemberId());
         if(member.isEmpty())

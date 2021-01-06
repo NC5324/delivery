@@ -1,7 +1,6 @@
 package com.nnmpizza.delivery.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nnmpizza.delivery.payload.request.TransactionRequest;
 
 import javax.persistence.*;
 import java.util.HashSet;
