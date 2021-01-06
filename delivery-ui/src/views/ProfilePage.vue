@@ -26,7 +26,8 @@
       <li v-for="(product,index) in shoppingCart" :key="index">{{product}}</li>
     </ul>
     <b-button @click="handleLogout" variant="danger">Logout</b-button>
-    <b-button style="margin-left: 10px" @click="test" size="lg" variant="dark">Delete all orders</b-button>
+    <b-button style="margin-left: 10px" @click="saveOrder" variant="success">Send order</b-button>
+    <b-button style="margin-left: 10px" @click="test" variant="primary">Test</b-button>
   </div>
 </template>
 
@@ -50,6 +51,26 @@ export default {
           this.$router.go()
         },
         error => {
+          this.message =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
+    saveOrder () {
+      const request = {
+        memberId: this.currentUser.id,
+        products: JSON.parse(localStorage.getItem('basket')),
+        status: 'accepted'
+      }
+      OrderService.saveOrder(request).then(
+        () => {
+          console.log('order registered successfully')
+          localStorage.removeItem('basket')
+        },
+        error => {
+          console.log('failed to register order')
           this.message =
             (error.response && error.response.data) ||
             error.message ||

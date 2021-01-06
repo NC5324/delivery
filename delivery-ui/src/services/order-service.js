@@ -9,9 +9,12 @@ class OrderService {
   }
 
   deleteAllOrders () {
-    return axios.delete(API_URL + '/purge', { headers: authHeader() }).then(
+    return axios.delete(API_URL + '/purge',
+      {
+        headers: authHeader()
+      }).then(
       response => {
-        console.log(response)
+        console.log(response.data)
       },
       error => {
         this.message =
@@ -30,17 +33,7 @@ class OrderService {
       },
       {
         headers: authHeader()
-      }).then(
-      response => {
-        console.log(response)
-      },
-      error => {
-        this.message =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString()
-      }
-    )
+      })
   }
 }
 export default new OrderService()
