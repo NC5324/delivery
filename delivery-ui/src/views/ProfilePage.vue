@@ -28,6 +28,18 @@
     <b-button @click="handleLogout" variant="danger">Logout</b-button>
     <b-button style="margin-left: 10px" @click="saveOrder" variant="success">Send order</b-button>
     <b-button style="margin-left: 10px" @click="test" variant="primary">Test</b-button>
+    <b-container fluid="sm">
+      100% wide until small breakpoint
+    </b-container>
+    <b-container fluid="md">
+      100% wide until medium breakpoint
+    </b-container>
+    <b-container fluid="lg">
+      100% wide until large breakpoint
+    </b-container>
+    <b-container fluid="xl">
+      100% wide until extra large breakpoint
+    </b-container>
   </div>
 </template>
 
@@ -68,6 +80,7 @@ export default {
         () => {
           console.log('order registered successfully')
           localStorage.removeItem('basket')
+          this.$router.go()
         },
         error => {
           console.log('failed to register order')

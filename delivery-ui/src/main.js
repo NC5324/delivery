@@ -11,8 +11,10 @@ import {
   BFormInput,
   BButton,
   BCard,
+  BCardGroup,
   BFormInvalidFeedback,
   BFormValidFeedback,
+  LayoutPlugin,
   NavbarPlugin,
   CarouselPlugin, TablePlugin, PaginationPlugin
 } from 'bootstrap-vue'
@@ -24,11 +26,13 @@ Vue.component('b-form-invalid-feedback', BFormInvalidFeedback)
 Vue.component('b-form-valid-feedback', BFormValidFeedback)
 Vue.component('b-button', BButton)
 Vue.component('b-card', BCard)
+Vue.component('b-card-group', BCardGroup)
 
 Vue.use(NavbarPlugin)
 Vue.use(CarouselPlugin)
 Vue.use(TablePlugin)
 Vue.use(PaginationPlugin)
+Vue.use(LayoutPlugin)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false

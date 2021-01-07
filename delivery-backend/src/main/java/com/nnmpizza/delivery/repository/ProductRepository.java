@@ -22,11 +22,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE " +
             "LOWER(p.name) " +
             "LIKE :#{#name == null || #name.isEmpty()? '%' : '%'+#name+'%'} AND " +
-            "LOWER(p.description) " +
-            "LIKE :#{#description == null || #description.isEmpty()? '%' : '%'+#description+'%'} AND " +
             "LOWER(p.type) " +
             "LIKE :#{#type == null || #type.isEmpty()? '%' : '%'+#type+'%'}")
-    Page<Product> findPageProducts(Pageable pageRequest, String name, String description, String type);
+    Page<Product> findPageProducts(Pageable pageRequest, String name, String type);
 
     Optional<Product> findPersonById(Long id);
 }

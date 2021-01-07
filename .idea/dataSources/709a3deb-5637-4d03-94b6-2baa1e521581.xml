@@ -785,7 +785,7 @@ false Z
 false Zulu
 false posixrules
 </TimeZones>
-      <StartupTime>1609689743</StartupTime>
+      <StartupTime>1609952927</StartupTime>
     </root>
     <database id="2" parent="1" name="city">
       <ObjectId>16394</ObjectId>
@@ -802,7 +802,7 @@ false posixrules
     <database id="5" parent="1" name="pizza">
       <ObjectId>41013</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>721</IntrospectionStateNumber>
+      <IntrospectionStateNumber>771</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|41025|41027|1
 sequence|table|41033|41035|1
@@ -866,7 +866,7 @@ sequence|table|41143|41145|1
       <Comment>standard public schema</Comment>
       <StateNumber>276</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>722</IntrospectionStateNumber>
+      <IntrospectionStateNumber>772</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="19" parent="5" name="heap">
@@ -990,7 +990,7 @@ sequence|table|41143|41145|1
     <table id="40" parent="18" name="product">
       <ObjectId>41035</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>663</StateNumber>
+      <StateNumber>761</StateNumber>
     </table>
     <table id="41" parent="18" name="product_topping">
       <ObjectId>41085</ObjectId>
@@ -1217,17 +1217,18 @@ role_id</ColNames>
       <StateNumber>661</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="73" parent="40" name="description">
-      <Position>4</Position>
-      <DataType>varchar|0s</DataType>
-      <StateNumber>661</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="74" parent="40" name="price">
+    <column id="73" parent="40" name="price">
       <Position>5</Position>
       <DataType>real|0s</DataType>
       <StateNumber>661</StateNumber>
       <TypeId>700</TypeId>
+    </column>
+    <column id="74" parent="40" name="img_source">
+      <Position>6</Position>
+      <DataType>varchar|0s</DataType>
+      <StateNumber>770</StateNumber>
+      <DefaultExpression>&apos;www.dominos.bg/gallery/fmobile/1266medium.png&apos;::character varying</DefaultExpression>
+      <TypeId>1043</TypeId>
     </column>
     <index id="75" parent="40" name="product_pkey">
       <ObjectId>41042</ObjectId>

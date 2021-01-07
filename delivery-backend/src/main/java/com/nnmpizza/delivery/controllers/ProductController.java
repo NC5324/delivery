@@ -60,11 +60,10 @@ public class ProductController {
     public ResponseEntity<?> paginateProduct(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                                             @RequestParam(value = "perPage", defaultValue = "5") int perPage,
                                             @RequestParam String name,
-                                            @RequestParam String description,
                                             @RequestParam String type){
 
         Pageable pageRequest = PageRequest.of(currentPage-1, perPage);
-        Page<Product> Products = ProductRepository.findPageProducts(pageRequest, name.toLowerCase(), description.toLowerCase(), type.toLowerCase());
+        Page<Product> Products = ProductRepository.findPageProducts(pageRequest, name.toLowerCase(), type.toLowerCase());
 
         Map<String, Object> response = new HashMap<>();
         response.put("products", Products.getContent());

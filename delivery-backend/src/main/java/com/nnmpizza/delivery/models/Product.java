@@ -17,11 +17,12 @@ public class Product {
 
     private String name;
 
-    private String description;
-
     private String type;
 
     private Double price;
+
+    @Column(name = "img_source")
+    private String imgSource;
 
     @ManyToMany
     @JsonIgnore
@@ -34,24 +35,35 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private Set<Order> orders = new HashSet<>();
 
-    public Product(Long id, String name, String description, String type, Double price) {
+    public Product(Long id, String name, String type, Double price, String imgSource) {
         this.id = id;
         this.name = name;
-        this.description = description;
         this.type = type;
         this.price = price;
+        this.imgSource = imgSource;
     }
 
     public Product(ProductRequest productRequest){
         this.id = productRequest.getId();
         this.name = productRequest.getName();
-        this.description = productRequest.getDescription();
         this.type = productRequest.getType();
         this.price = productRequest.getPrice();
     }
 
     public Product () {
 
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getImgSource() {
+        return imgSource;
+    }
+
+    public void setImgSource(String imgSource) {
+        this.imgSource = imgSource;
     }
 
     public Long getId() {
@@ -64,14 +76,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getType() {

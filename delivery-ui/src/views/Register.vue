@@ -31,9 +31,6 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-invalid-feedback style="margin-bottom: 10px; font-weight: bold;" :state="loginSuccess">
-          Bad credentials. Try again.
-        </b-form-invalid-feedback>
         <b-form-valid-feedback>
         </b-form-valid-feedback>
         <b-button type="submit" variant="primary">Register</b-button>
