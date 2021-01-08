@@ -1,6 +1,6 @@
 <template>
     <div class="top">
-      <b-container style="height:  background-color: antiquewhite">
+      <b-container style="background-color: antiquewhite">
         <b-card-group>
           <div v-for="product in products" :key="product">
             <b-card
