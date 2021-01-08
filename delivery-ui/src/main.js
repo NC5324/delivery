@@ -17,6 +17,7 @@ import {
   BFormSpinbutton,
   LayoutPlugin,
   NavbarPlugin,
+  TabsPlugin,
   CarouselPlugin, TablePlugin, PaginationPlugin
 } from 'bootstrap-vue'
 
@@ -35,6 +36,7 @@ Vue.use(CarouselPlugin)
 Vue.use(TablePlugin)
 Vue.use(PaginationPlugin)
 Vue.use(LayoutPlugin)
+Vue.use(TabsPlugin)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false

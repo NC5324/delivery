@@ -28,20 +28,6 @@
 
       <!-- Slides with image only -->
       <b-carousel-slide img-src="https://www.dominos.bg/images/banners/499_bg_banner.jpg"></b-carousel-slide>
-
-      <!-- Slides with img slot -->
-      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-      <b-carousel-slide>
-        <template #img>
-          <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="300"
-            src="https://www.dominos.bg/images/banners/416_bg_banner.jpg"
-            alt="image slot"
-          >
-        </template>
-      </b-carousel-slide>
     </b-carousel>
   </div>
 </template>

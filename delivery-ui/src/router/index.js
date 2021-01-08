@@ -4,8 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Profile from '../views/ProfilePage'
 import Register from '../views/Register'
-import Menu from '../views/Menu'
 import About from '../views/About'
+import Menu from '@/views/Menu'
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,9 +17,6 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: About
   },
   {
@@ -33,14 +30,14 @@ const routes = [
     component: Profile
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: Register
-  },
-  {
     path: '/menu',
     name: 'Menu',
     component: Menu
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
   {
     path: '*',

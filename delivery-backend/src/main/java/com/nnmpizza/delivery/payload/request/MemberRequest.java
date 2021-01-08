@@ -6,13 +6,34 @@ public class MemberRequest {
     private String password;
     private String email;
     private String phoneNumber;
+    private String firstName;
+    private String lastName;
 
-    public MemberRequest(Long id, String username, String password, String email, String phoneNumber) {
+
+    public MemberRequest(Long id, String username, String password, String email, String phoneNumber, String firstName, String lastName) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Long getId() {

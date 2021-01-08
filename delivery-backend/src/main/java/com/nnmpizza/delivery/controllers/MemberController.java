@@ -1,12 +1,11 @@
 package com.nnmpizza.delivery.controllers;
 
 import com.nnmpizza.delivery.models.Member;
+import com.nnmpizza.delivery.payload.request.MemberRequest;
 import com.nnmpizza.delivery.repository.MemberRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +23,15 @@ public class MemberController {
     @GetMapping("/all")
     public List<Member> getAllMembers(){
         return memberRepository.findAll();
+    }
+
+    @PostMapping("/save")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_MODERATOR') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> saveMember(@RequestBody MemberRequest memberRequest) {
+        var member = new Member(memberRequest);
+        memberRepository.save(member);
+
+        return ResponseEntity.ok(String.format("member with ID: %d saved successfully", memberRequest.getId()));
     }
 
 }

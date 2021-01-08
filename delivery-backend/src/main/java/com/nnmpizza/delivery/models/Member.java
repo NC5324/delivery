@@ -1,6 +1,7 @@
 package com.nnmpizza.delivery.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nnmpizza.delivery.payload.request.MemberRequest;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -59,6 +60,16 @@ public class Member {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public Member(MemberRequest memberRequest){
+        this.id = memberRequest.getId();
+        this.username = memberRequest.getUsername();
+        this.password = memberRequest.getPassword();
+        this.email = memberRequest.getEmail();
+        this.phoneNumber = memberRequest.getPhoneNumber();
+        this.lastName = memberRequest.getLastName();
+        this.firstName = memberRequest.getFirstName();
     }
 
     public Member() {
