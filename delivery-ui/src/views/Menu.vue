@@ -1,7 +1,7 @@
 <template>
     <div class="top">
-      <b-container style="background-color: antiquewhite">
-        <b-card-group columns>
+      <b-container style="height:  background-color: antiquewhite">
+        <b-card-group>
           <div v-for="product in products" :key="product">
             <b-card
               :title="product.name"
@@ -10,17 +10,17 @@
               img-top
               img-height="200rem"
               tag="article"
-              style="min-width: 80% ;max-width: 80%; min-height: 50%; max-height: 50%"
-              class="mb-2 ml-2 mr-2 mt-2"
-              footer-tag="footer"
+              style="min-width: 20rem ;max-width: 20rem; min-height: 25rem;"
+              class="mb-2 mr-2 ml-2 mt-2"
               border-variant="dark"
             >
 
               <b-card-text>
-                {{ product.toppings }}
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                  ut labore et dolore magna aliqua. Pellentesque elit ullamcorper dignissim cras.
               </b-card-text>
               <template #footer>
-                <b-button @click="addToCart(product.id)" style="width: 100%" variant="success">Add to cart</b-button>
+                <b-button @click="addToCart(product.id)" style="width: 100%; height: 100%" variant="success">Add to cart</b-button>
               </template>
             </b-card>
           </div>
@@ -119,8 +119,5 @@ export default {
   margin-right: 10vw;
   max-width: 80vw;
   border: thin solid black;
-}
-.navbar-light .navbar-nav .nav-link{
-  color:white!important
 }
 </style>
