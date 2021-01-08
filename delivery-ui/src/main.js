@@ -14,11 +14,13 @@ import {
   BCardGroup,
   BFormInvalidFeedback,
   BFormValidFeedback,
+  BFormSpinbutton,
   LayoutPlugin,
   NavbarPlugin,
   CarouselPlugin, TablePlugin, PaginationPlugin
 } from 'bootstrap-vue'
 
+Vue.component('b-form-spinbutton', BFormSpinbutton)
 Vue.component('b-form', BForm)
 Vue.component('b-form-group', BFormGroup)
 Vue.component('b-form-input', BFormInput)

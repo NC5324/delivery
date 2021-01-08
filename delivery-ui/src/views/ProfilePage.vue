@@ -1,9 +1,12 @@
 <template>
-  <div class="container top">
+  <div style="color: green;" class="container top">
     <header class="jumbotron">
       <h3>
         <strong>{{currentUser.username + '\'s'}}</strong> Profile
       </h3>
+      <b-button @click="handleLogout" variant="danger">Logout</b-button>
+      <b-button style="margin-left: 10px" @click="saveOrder" variant="success">Send order</b-button>
+      <b-button @click="clearCart" style="margin-left: 10px" variant="dark">Clear cart</b-button>
     </header>
     <p>
       <strong>Token:</strong>
@@ -23,23 +26,8 @@
     </ul>
     <strong>Количка:</strong>
     <ul>
-      <li v-for="(product,index) in shoppingCart" :key="index">{{product}}</li>
+      <li v-for="(product,index) in shoppingCart" :key="index"><strong style="horiz-align: center">{{product}}</strong></li>
     </ul>
-    <b-button @click="handleLogout" variant="danger">Logout</b-button>
-    <b-button style="margin-left: 10px" @click="saveOrder" variant="success">Send order</b-button>
-    <b-button style="margin-left: 10px" @click="test" variant="primary">Test</b-button>
-    <b-container fluid="sm">
-      100% wide until small breakpoint
-    </b-container>
-    <b-container fluid="md">
-      100% wide until medium breakpoint
-    </b-container>
-    <b-container fluid="lg">
-      100% wide until large breakpoint
-    </b-container>
-    <b-container fluid="xl">
-      100% wide until extra large breakpoint
-    </b-container>
   </div>
 </template>
 
@@ -70,6 +58,10 @@ export default {
         }
       )
     },
+    clearCart () {
+      localStorage.removeItem('basket')
+      this.$router.go()
+    },
     saveOrder () {
       const request = {
         memberId: this.currentUser.id,
@@ -90,9 +82,6 @@ export default {
             error.toString()
         }
       )
-    },
-    test () {
-      OrderService.deleteAllOrders()
     }
   }
 }
@@ -100,6 +89,6 @@ export default {
 
 <style scoped>
 .top{
-  margin-top: 100px;
+  margin-top: 80px;
 }
 </style>

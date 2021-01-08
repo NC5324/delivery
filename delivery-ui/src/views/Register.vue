@@ -1,40 +1,41 @@
 <template>
-  <div class="center-screen" style="margin-top: 100px">
-    <b-card style="max-width: 100vh; min-width: 50vh">
+  <div class="center-screen" style="margin-top: 80px">
+    <b-card style="margin-top: 20px; max-width: 100vh; min-width: 50vh">
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-        <b-form-group id="input-group-1" label="Username:" label-for="input-1">
+        <b-form-group id="input-group-1" label="Потребителско име:" label-for="input-1">
           <b-form-input id="input-1"
                         v-model="user.username"
                         type="text"
-                        placeholder="Enter username"
+                        placeholder="Въведете потребителско име"
                         required
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-2" label="Password:" label-for="input-2">
+        <b-form-group id="input-group-2" label="Парола:" label-for="input-2">
           <b-form-input
             id="input-2"
             v-model="user.password"
             type="password"
-            placeholder="Enter password"
+            placeholder="Въведете парола"
             required
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-3" label="E-mail:" label-for="input-3">
+        <b-form-group id="input-group-3" label="E-mail адрес:" label-for="input-3">
           <b-form-input
             id="input-3"
             v-model="user.email"
             :state = "isEmailValid"
-            placeholder="Enter e-mail"
+            placeholder="Въведете е-mail"
             required
           ></b-form-input>
         </b-form-group>
 
         <b-form-valid-feedback>
         </b-form-valid-feedback>
-        <b-button type="submit" variant="primary">Register</b-button>
-        <b-button type="reset" variant="primary" style="margin-left: 10px;">Reset</b-button>
+        <b-button type="submit" variant="primary">Регистрация</b-button>
+        <b-button type="reset" variant="primary" style="margin-left: 10px;">Изчисти</b-button>
+        <b-button @click="cancel" variant="primary" style="margin-left: 10px;">Отказ</b-button>
       </b-form>
     </b-card>
   </div>
@@ -95,6 +96,9 @@ export default {
       this.$nextTick(() => {
         this.show = true
       })
+    },
+    cancel () {
+      this.$router.push('/login')
     }
   }
 }
