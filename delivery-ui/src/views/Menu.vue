@@ -1,8 +1,8 @@
 <template>
   <div>
-    <b-tabs content-class="mt-3">
-      <b-tab title="Пици" active>
         <b-container style="background-image: url(https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)" class="center-screen">
+          <b-tabs pills content-class="mt-3">
+          <b-tab title="Пици" active>
           <b-card-group>
             <div v-for="(product, index) in products" :key="product">
               <b-card
@@ -42,11 +42,11 @@
             size="lg"
           >
           </b-pagination>
+          </b-tab>
+          <b-tab title="Десерти"><p>Това да не ви е сладкарница</p></b-tab>
+          <b-tab title="За пиене"><p>За пиене: вода от чешмата 1лв./200мл.</p></b-tab>
+          </b-tabs>
         </b-container>
-      </b-tab>
-      <b-tab title="Десерти"><p>I'm the second tab</p></b-tab>
-      <b-tab title="За пиене"><p>I'm a disabled tab!</p></b-tab>
-    </b-tabs>
     <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png">
   </div>
 </template>

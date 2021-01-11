@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://images.pexels.com/photos/326333/pexels-photo-326333.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);" id="app">
-      <b-navbar toggleable="lg" :variant="this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'">
+      <b-navbar sticky toggleable="lg" :variant="this.variant">
         <b-navbar-brand  href="/">
           <img width="200px" height="60px" src="https://www.pngkey.com/png/full/490-4902011_new-york-pizza-logo-png-transparent-new-york.png">
         </b-navbar-brand>
@@ -41,7 +41,7 @@ export default {
   data () {
     return {
       profilePageName: '',
-      variant: 'transparent'
+      variant: ''
     }
   },
   computed: {
@@ -59,6 +59,7 @@ export default {
       this.profilePageName = 'Вход'
     }
     window.addEventListener('scroll', this.handleScroll)
+    this.variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
   },
   methods: {
     test () {
