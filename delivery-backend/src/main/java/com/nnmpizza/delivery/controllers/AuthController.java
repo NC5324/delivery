@@ -11,6 +11,7 @@ import com.nnmpizza.delivery.repository.RoleRepository;
 import com.nnmpizza.delivery.security.jwt.JwtUtils;
 import com.nnmpizza.delivery.security.services.MemberDetails;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -78,8 +79,32 @@ public class AuthController{
         Member user = new Member(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 passwordEncoder.encode(signUpRequest.getPassword()));
+        Set<Role> roles = new HashSet<>();
 
-        Set<String> strRoles = signUpRequest.getRole();
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+
+        user.setRoles(roles);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/admin/signup")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> registerAdmin (@Valid @RequestBody SignupRequest signUpRequest) {
+        boolean isNew = !userRepository.existsByUsername(signUpRequest.getUsername());
+
+        Member user;
+        if (isNew) {
+            user = new Member(signUpRequest.getUsername(),
+                    signUpRequest.getEmail(),
+                    passwordEncoder.encode(signUpRequest.getPassword()));
+        } else {
+            user = userRepository.findByUsername(signUpRequest.getUsername()).get();
+        }
+        Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
@@ -87,24 +112,33 @@ public class AuthController{
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
+            Role adminRole = roleRepository.findByName("ROLE_ADMIN")
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
+
+            Role modRole = roleRepository.findByName("ROLE_MODERATOR")
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(modRole);
+
+            Role userRole = roleRepository.findByName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName("ROLE_ADMIN")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
+                        roles.add(modRole);
+                        roles.add(userRole);
 
                         break;
                     case "mod":
-                        Role modRole = roleRepository.findByName("ROLE_MODERATOR")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
+                        roles.add(userRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName("ROLE_USER")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
+                        break;
                 }
             });
         }
@@ -112,6 +146,6 @@ public class AuthController{
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse(isNew ? "User registered successfully!" : "User updated successfully!"));
     }
 }

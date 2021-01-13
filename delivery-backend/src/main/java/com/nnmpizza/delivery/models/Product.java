@@ -25,7 +25,7 @@ public class Product {
     private String imgSource;
 
     @ManyToMany
-    @JsonIgnore
+    //@JsonIgnore
     @JoinTable(name = "product_topping",
             joinColumns = @JoinColumn(name="product_id"),
             inverseJoinColumns = @JoinColumn(name = "topping_id"))
@@ -43,11 +43,10 @@ public class Product {
         this.imgSource = imgSource;
     }
 
-    public Product(ProductRequest productRequest){
-        this.id = productRequest.getId();
-        this.name = productRequest.getName();
-        this.type = productRequest.getType();
-        this.price = productRequest.getPrice();
+    public Product(String name, String type, Double price) {
+        this.name = name;
+        this.type = type;
+        this.price = price;
     }
 
     public Product () {

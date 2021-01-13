@@ -1,8 +1,8 @@
 <template>
-  <div>
-        <b-container style="background-image: url(https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)" class="center-screen">
-          <b-tabs pills content-class="mt-3">
-          <b-tab title="Пици" active>
+  <div id="content">
+    <b-container style="background-image: url(https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)" class="center-screen">
+      <b-tabs pills content-class="mt-3">
+        <b-tab title="Пици" active>
           <b-card-group>
             <div v-for="(product, index) in products" :key="product">
               <b-card
@@ -11,15 +11,17 @@
                 img-alt="Image"
                 img-top
                 img-height="200rem"
-                tag="article"
                 style="min-width: 20rem ;max-width: 20rem; min-height: 25rem;"
                 class="mb-2 mr-2 ml-2 mt-2"
-                border-variant="dark"
               >
-
-                <b-card-text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Pellentesque elit ullamcorper dignissim cras.
+                <b-card-text style="min-height: 10rem">
+                  <div v-if="index === 2">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                    ut labore et dolore magna aliqua. Pellentesque elit ullamcorper dignissim cras.
+                  </div>
+                  <div v-else>
+                    Lorem ipsum
+                  </div>
                 </b-card-text>
                 <template #footer>
                   <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
@@ -42,12 +44,12 @@
             size="lg"
           >
           </b-pagination>
-          </b-tab>
-          <b-tab title="Десерти"><p>Това да не ви е сладкарница</p></b-tab>
-          <b-tab title="За пиене"><p>За пиене: вода от чешмата 1лв./200мл.</p></b-tab>
-          </b-tabs>
-        </b-container>
-    <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png">
+        </b-tab>
+        <b-tab title="Десерти"><p>Това да не ви е сладкарница</p></b-tab>
+        <b-tab title="За пиене"><p>За пиене: вода от чешмата 1лв./200мл.</p></b-tab>
+      </b-tabs>
+    </b-container>
+    <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png" alt="">
   </div>
 </template>
 

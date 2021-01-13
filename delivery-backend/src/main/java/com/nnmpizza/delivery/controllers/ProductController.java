@@ -1,8 +1,10 @@
 package com.nnmpizza.delivery.controllers;
 
 import com.nnmpizza.delivery.models.Product;
+import com.nnmpizza.delivery.models.Topping;
 import com.nnmpizza.delivery.payload.request.ProductRequest;
 import com.nnmpizza.delivery.repository.ProductRepository;
+import com.nnmpizza.delivery.repository.ToppingRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -21,9 +20,11 @@ import java.util.Optional;
 public class ProductController {
 
     final ProductRepository ProductRepository;
+    final ToppingRepository toppingRepository;
 
-    public ProductController (ProductRepository ProductRepository){
+    public ProductController(ProductRepository ProductRepository, ToppingRepository toppingRepository){
         this.ProductRepository = ProductRepository;
+        this.toppingRepository = toppingRepository;
     }
 
     @GetMapping("/all")
@@ -32,16 +33,34 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveProduct(@RequestBody ProductRequest productRequest){
+    public ResponseEntity<?> saveProduct(@RequestBody ProductRequest productRequest) {
         boolean isNew = productRequest.getId() == null;
 
-        Product newProduct = new Product(productRequest);
+        Product newProduct;
+        if(isNew) {
+            newProduct = new Product(productRequest.getName(), productRequest.getType(), productRequest.getPrice());
+        } else {
+            newProduct = ProductRepository.findById(productRequest.getId()).get();
+            newProduct.setName(productRequest.getName());
+            newProduct.setType(productRequest.getType());
+            newProduct.setPrice(productRequest.getPrice());
+        }
 
+        Set<Long> idToppings = productRequest.getToppings();
+        Set<Topping> toppings = new HashSet<>();
+        if(idToppings!=null)
+        for (var id : idToppings) {
+            if (toppingRepository.findById(id).isPresent()) {
+                toppings.add(toppingRepository.findById(id).get());
+            }
+        }
+
+        newProduct.setToppings(toppings);
         ProductRepository.save(newProduct);
 
         Map<String, Object> response = new HashMap<>();
         response.put("Product", newProduct);
-        if(!isNew){
+        if (!isNew) {
             response.put("message", "Успешно редактиран.");
         } else {
             response.put("message", "Успешно записан.");
@@ -53,7 +72,15 @@ public class ProductController {
     public ResponseEntity<?> getProductById(@RequestParam Long id) {
         Optional<Product> result = ProductRepository.findById(id);
 
-        return result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.ok().body("Няма намерен човек.");
+        if(result.isPresent()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("product", result.get());
+            response.put("id", result.get().getId());
+            response.put("name", result.get().getName());
+            return ResponseEntity.ok(response);
+        }else{
+            return ResponseEntity.ok("Product not found");
+        }
     }
 
     @GetMapping("/search/page")

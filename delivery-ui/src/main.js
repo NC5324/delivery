@@ -10,7 +10,6 @@ import {
   BFormGroup,
   BFormInput,
   BButton,
-  BCard,
   BCardGroup,
   BFormInvalidFeedback,
   BFormValidFeedback,
@@ -18,7 +17,7 @@ import {
   LayoutPlugin,
   NavbarPlugin,
   TabsPlugin,
-  CarouselPlugin, TablePlugin, PaginationPlugin
+  CarouselPlugin, TablePlugin, PaginationPlugin, CardPlugin, SidebarPlugin, AvatarPlugin, BootstrapVueIcons
 } from 'bootstrap-vue'
 
 Vue.component('b-form-spinbutton', BFormSpinbutton)
@@ -28,7 +27,6 @@ Vue.component('b-form-input', BFormInput)
 Vue.component('b-form-invalid-feedback', BFormInvalidFeedback)
 Vue.component('b-form-valid-feedback', BFormValidFeedback)
 Vue.component('b-button', BButton)
-Vue.component('b-card', BCard)
 Vue.component('b-card-group', BCardGroup)
 
 Vue.use(NavbarPlugin)
@@ -37,6 +35,10 @@ Vue.use(TablePlugin)
 Vue.use(PaginationPlugin)
 Vue.use(LayoutPlugin)
 Vue.use(TabsPlugin)
+Vue.use(CardPlugin)
+Vue.use(SidebarPlugin)
+Vue.use(AvatarPlugin)
+Vue.use(BootstrapVueIcons)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false

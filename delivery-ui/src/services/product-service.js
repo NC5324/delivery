@@ -21,7 +21,6 @@ class ProductService {
   }
 
   getProductById (id) {
-    console.log(id)
     return axios.get(API_URL + '/search/id',
       {
         params: {

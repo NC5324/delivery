@@ -34,4 +34,11 @@ public class MemberController {
         return ResponseEntity.ok(String.format("member with ID: %d saved successfully", memberRequest.getId()));
     }
 
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteById (@RequestParam Long id){
+        memberRepository.deleteById(id);
+        return ResponseEntity.ok("User deleted successfully!");
+    }
+
 }
