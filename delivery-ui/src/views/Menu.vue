@@ -1,27 +1,24 @@
 <template>
   <div id="content">
-    <b-container style="background-image: url(https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)" class="center-screen">
-      <b-tabs pills content-class="mt-3">
+    <b-container style="background-image: url(https://images.unsplash.com/photo-1524365521362-0a59611ecbf1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80)" class="center-screen">
+      <b-tabs style="margin-top: 1rem" pills content-class="mt-3">
         <b-tab title="Пици" active>
           <b-card-group>
             <div v-for="(product, index) in products" :key="product">
               <b-card
                 :title="product.name"
-                :img-src="product.imgSource"
+                :img-src="product.imgSource ? product.imgSource : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png'"
                 img-alt="Image"
                 img-top
-                img-height="200rem"
-                style="min-width: 20rem ;max-width: 20rem; min-height: 25rem;"
+                style="min-width: 22rem ;max-width: 22rem; min-height: 30rem;"
                 class="mb-2 mr-2 ml-2 mt-2"
               >
-                <b-card-text style="min-height: 10rem">
-                  <div v-if="index === 2">
+                <b-card-text>
+                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                     ut labore et dolore magna aliqua. Pellentesque elit ullamcorper dignissim cras.
-                  </div>
-                  <div v-else>
-                    Lorem ipsum
-                  </div>
+                  </p>
+                  <strong>Toppings: {{product.toppings}}</strong>
                 </b-card-text>
                 <template #footer>
                   <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>

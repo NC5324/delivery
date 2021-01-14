@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://images.pexels.com/photos/326333/pexels-photo-326333.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);" id="app">
+  <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://cdn.hipwallpaper.com/i/3/15/dqIeNr.jpg); background-repeat: no-repeat; background-size: 100% 100%" id="app">
     <b-navbar sticky toggleable="lg" :variant="this.nav_bg_variant">
       <b-navbar-brand  href="/">
         <img width="200px" height="60px" src="https://www.pngkey.com/png/full/490-4902011_new-york-pizza-logo-png-transparent-new-york.png" alt="brandLogo">
@@ -8,20 +8,33 @@
       <b-navbar-toggle target="nav-collapse">
       </b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse class="ml-auto" id="nav-collapse" is-nav>
         <!--Left aligned nav items-->
         <b-navbar-nav>
-          <b-nav-item href="/"><b-button>Начало</b-button></b-nav-item>
-          <b-nav-item href="/about"><b-button>За нас</b-button></b-nav-item>
-          <b-nav-item href="/menu"><b-button>Меню</b-button> </b-nav-item>
+          <b-nav-item href="/"><b-button variant="dark">Начало</b-button></b-nav-item>
+          <b-nav-item href="/about"><b-button variant="dark">За нас</b-button></b-nav-item>
+          <b-nav-item href="/menu"><b-button variant="dark">Меню</b-button> </b-nav-item>
+          <b-nav-item right v-if="showModeratorBoards"><b-button variant="dark">Управление на поръчки</b-button></b-nav-item>
+          <b-nav-item right v-if="showAdminBoards"><b-button variant="dark">Управление на продукти</b-button></b-nav-item>
         </b-navbar-nav>
+      </b-collapse>
+
+      <b-navbar-toggle class="ml-auto" target="nav-collapse2" is-nav>
+      </b-navbar-toggle>
 
         <!--Right aligned nav items-->
+      <b-collapse id="nav-collapse2" is-nav>
+        <b-navbar-nav class="ml-auto" v-if="!currentUser">
+          <b-nav-item right v-b-toggle.sidebar-right><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
+          <b-nav-item right href="/login"><b-button variant="dark"><b-icon-door-closed></b-icon-door-closed> Вход </b-button></b-nav-item>
+          <b-nav-item right href="/register"><b-button variant="dark"><b-icon-key></b-icon-key> Регистрация </b-button></b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto" v-if="currentUser">
+          <b-nav-item right v-b-toggle.sidebar-right><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
+          <b-nav-item right href="/profile"><b-button variant="dark"><b-icon-person></b-icon-person>Профил</b-button></b-nav-item>
+          <b-nav-item right><b-button @click="logOut" variant="dark"><b-icon-door-open></b-icon-door-open>Изход</b-button></b-nav-item>
+        </b-navbar-nav>
       </b-collapse>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item right><b-avatar :size="40" icon="basket2" v-b-toggle.sidebar-right></b-avatar></b-nav-item>
-        <b-nav-item right><b-avatar :size="40" button @click="test"></b-avatar></b-nav-item>
-      </b-navbar-nav>
     </b-navbar>
     <router-view/>
     <b-sidebar @shown="onBasketShow" @hidden="onBasketHide"  id="sidebar-right" title="Количка" right bg-variant="dark" text-variant="light">
@@ -31,15 +44,20 @@
           <b-button size="sm" @click="hide">Close</b-button>
         </div>
       </template>
-      <b-card-group v-for="item in products" :key="item" class="px-3 py-2">
-        <b-card bg-variant="white" text-variant="dark" :header="item.name" class="text-center mt-3">
-          <b-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. {{item.toppings}}</b-card-text>
-          <template #footer>
-            <strong class="mr-auto">Цена: {{item.price}} лв.</strong>
-            <b-avatar button @click="removeFromCart(item.id)" class="ml-5" icon="x-circle"></b-avatar>
-          </template>
-        </b-card>
-      </b-card-group>
+      <div v-if="!initial">
+        <b-card-group v-for="item in products" :key="item" class="px-3 py-2">
+          <b-card bg-variant="white" text-variant="dark" :header="item.name" class="text-center mt-3">
+            <b-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. {{item.toppings}}</b-card-text>
+            <template #footer>
+              <strong class="mr-auto">Цена: {{item.price}} лв.</strong>
+              <b-avatar button @click="removeFromCart(item.id)" class="ml-5" icon="x-circle"></b-avatar>
+            </template>
+          </b-card>
+        </b-card-group>
+      </div>
+      <div v-else>
+        <strong class="mr-auto">Количката е празна!</strong>
+      </div>
     </b-sidebar>
   </div>
 </template>
@@ -49,7 +67,6 @@ import ProductService from './services/product-service'
 export default {
   data () {
     return {
-      profilePageName: '',
       nav_bg_variant: '',
       products: [{
         id: '',
@@ -59,23 +76,36 @@ export default {
         type: ''
       }],
       totalPrice: 0,
-      show: false
+      show: false,
+      initial: true
     }
   },
   computed: {
     loggedIn () {
       return this.$store.state.auth.status.loggedIn
     },
+    currentUser () {
+      return this.$store.state.auth.user
+    },
+    showAdminBoards () {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes('ROLE_ADMIN')
+      }
+
+      return false
+    },
+    showModeratorBoards () {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes('ROLE_MODERATOR')
+      }
+
+      return false
+    },
     validation () {
       return this.profilePageName === 'Profile'
     }
   },
   created () {
-    if (this.loggedIn) {
-      this.profilePageName = 'Профил'
-    } else {
-      this.profilePageName = 'Вход'
-    }
     this.onBasketShow()
     window.addEventListener('scroll', this.handleScroll)
     this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
@@ -97,6 +127,7 @@ export default {
     },
     onBasketShow () {
       if (localStorage.getItem('basket')) {
+        this.initial = false
         const items = JSON.parse(localStorage.getItem('basket'))
         for (let i = 0; i < items.length; i++) {
           ProductService.getProductById(items[i].productId).then(
@@ -144,6 +175,10 @@ export default {
         localStorage.setItem('basket', JSON.stringify(items))
       }
       this.onBasketShow()
+    },
+    logOut () {
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/')
     }
   }
 }
