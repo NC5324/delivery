@@ -118,9 +118,6 @@ export default {
 </script>
 
 <style scoped>
-.top{
-  margin-top: 85px;
-}
 .center-screen {
   display: flex;
   flex-direction: column;

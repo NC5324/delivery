@@ -16,6 +16,7 @@
           <b-nav-item href="/menu"><b-button variant="dark">Меню</b-button> </b-nav-item>
           <b-nav-item right v-if="showModeratorBoards"><b-button variant="dark">Управление на поръчки</b-button></b-nav-item>
           <b-nav-item right v-if="showAdminBoards"><b-button variant="dark">Управление на продукти</b-button></b-nav-item>
+          <b-nav-item right v-if="showAdminBoards"><b-button variant="dark">Управление на акаунти</b-button></b-nav-item>
         </b-navbar-nav>
       </b-collapse>
 
@@ -100,9 +101,6 @@ export default {
       }
 
       return false
-    },
-    validation () {
-      return this.profilePageName === 'Profile'
     }
   },
   created () {
@@ -111,13 +109,6 @@ export default {
     this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
   },
   methods: {
-    test () {
-      if (this.validation) {
-        this.$router.push('/profile')
-      } else {
-        this.$router.push('/login')
-      }
-    },
     handleScroll () {
       if (window.scrollY > 50) {
         this.nav_bg_variant = 'white'
