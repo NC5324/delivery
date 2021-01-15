@@ -14,9 +14,12 @@ import {
   BFormInvalidFeedback,
   BFormValidFeedback,
   BFormSpinbutton,
+  BFormCheckbox,
+  BFormCheckboxGroup,
   LayoutPlugin,
   NavbarPlugin,
   TabsPlugin,
+  ModalPlugin,
   CarouselPlugin, TablePlugin, PaginationPlugin, CardPlugin, SidebarPlugin, AvatarPlugin, BootstrapVueIcons
 } from 'bootstrap-vue'
 
@@ -28,6 +31,8 @@ Vue.component('b-form-invalid-feedback', BFormInvalidFeedback)
 Vue.component('b-form-valid-feedback', BFormValidFeedback)
 Vue.component('b-button', BButton)
 Vue.component('b-card-group', BCardGroup)
+Vue.component('b-form-checkbox-group', BFormCheckboxGroup)
+Vue.component('b-form-checkbox', BFormCheckbox)
 
 Vue.use(NavbarPlugin)
 Vue.use(CarouselPlugin)
@@ -39,6 +44,7 @@ Vue.use(CardPlugin)
 Vue.use(SidebarPlugin)
 Vue.use(AvatarPlugin)
 Vue.use(BootstrapVueIcons)
+Vue.use(ModalPlugin)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false

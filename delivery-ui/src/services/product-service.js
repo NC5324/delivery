@@ -39,14 +39,16 @@ class ProductService {
       })
   }
 
-  saveProduct (form) {
-    console.log(form)
+  saveProduct (product) {
+    console.log(product)
     return axios.post(API_URL + '/save',
       {
-        id: form.id,
-        name: form.name == null ? '' : form.name,
-        description: form.description == null ? '' : form.description,
-        type: form.type == null ? '' : form.type
+        id: product.id,
+        name: product.name == null ? '' : product.name,
+        type: product.type == null ? '' : product.type,
+        price: product.price,
+        imgSource: product.imgSource,
+        toppings: product.newToppings
       })
   }
 }

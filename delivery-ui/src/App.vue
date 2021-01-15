@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://cdn.hipwallpaper.com/i/3/15/dqIeNr.jpg); background-repeat: no-repeat; background-size: 100% 100%" id="app">
-    <b-navbar sticky toggleable="lg" :variant="this.nav_bg_variant">
+    <b-navbar sticky toggleable="xl" :variant="this.nav_bg_variant">
       <b-navbar-brand  href="/">
         <img width="200px" height="60px" src="https://www.pngkey.com/png/full/490-4902011_new-york-pizza-logo-png-transparent-new-york.png" alt="brandLogo">
       </b-navbar-brand>
@@ -15,7 +15,7 @@
           <b-nav-item href="/about"><b-button variant="dark">За нас</b-button></b-nav-item>
           <b-nav-item href="/menu"><b-button variant="dark">Меню</b-button> </b-nav-item>
           <b-nav-item right v-if="showModeratorBoards"><b-button variant="dark">Управление на поръчки</b-button></b-nav-item>
-          <b-nav-item right v-if="showAdminBoards"><b-button variant="dark">Управление на продукти</b-button></b-nav-item>
+          <b-nav-item href="/manage/products" right v-if="showAdminBoards"><b-button variant="dark">Управление на продукти</b-button></b-nav-item>
           <b-nav-item right v-if="showAdminBoards"><b-button variant="dark">Управление на акаунти</b-button></b-nav-item>
         </b-navbar-nav>
       </b-collapse>

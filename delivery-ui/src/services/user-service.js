@@ -19,8 +19,6 @@ class UserService {
             error.message ||
             error.toString()
         })
-
-
   }
 }
 

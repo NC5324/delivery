@@ -3,6 +3,7 @@ package com.nnmpizza.delivery.controllers;
 import com.nnmpizza.delivery.models.Product;
 import com.nnmpizza.delivery.models.Topping;
 import com.nnmpizza.delivery.payload.request.ProductRequest;
+import com.nnmpizza.delivery.payload.request.ToppingRequest;
 import com.nnmpizza.delivery.repository.ProductRepository;
 import com.nnmpizza.delivery.repository.ToppingRepository;
 import org.springframework.data.domain.Page;
@@ -36,22 +37,13 @@ public class ProductController {
     public ResponseEntity<?> saveProduct(@RequestBody ProductRequest productRequest) {
         boolean isNew = productRequest.getId() == null;
 
-        Product newProduct;
-        if(isNew) {
-            newProduct = new Product(productRequest.getName(), productRequest.getType(), productRequest.getPrice());
-        } else {
-            newProduct = ProductRepository.findById(productRequest.getId()).get();
-            newProduct.setName(productRequest.getName());
-            newProduct.setType(productRequest.getType());
-            newProduct.setPrice(productRequest.getPrice());
-        }
+        Product newProduct = new Product(productRequest.getId(), productRequest.getName(), productRequest.getType(), productRequest.getPrice(), productRequest.getImgSource());
 
-        Set<Long> idToppings = productRequest.getToppings();
+        Set<ToppingRequest> jsonToppings = productRequest.getToppings();
         Set<Topping> toppings = new HashSet<>();
-        if(idToppings!=null)
-        for (var id : idToppings) {
-            if (toppingRepository.findById(id).isPresent()) {
-                toppings.add(toppingRepository.findById(id).get());
+        for (var jsonTopping : jsonToppings) {
+            if (toppingRepository.findById(jsonTopping.getId()).isPresent()) {
+                toppings.add(toppingRepository.findById(jsonTopping.getId()).get());
             }
         }
 

@@ -1,8 +1,5 @@
 package com.nnmpizza.delivery.payload.request;
 
-import com.nnmpizza.delivery.models.Product;
-import com.nnmpizza.delivery.repository.ProductRepository;
-
 import java.util.Set;
 
 public class ProductRequest {
@@ -11,13 +8,22 @@ public class ProductRequest {
     private String type;
     private Long id;
     private Double price;
-    private Set<Long> toppings;
+    private Set<ToppingRequest> toppings;
+    private String imgSource;
 
-    public Set<Long> getToppings() {
+    public String getImgSource() {
+        return imgSource;
+    }
+
+    public void setImgSource(String imgSource) {
+        this.imgSource = imgSource;
+    }
+
+    public Set<ToppingRequest> getToppings() {
         return toppings;
     }
 
-    public void setToppings(Set<Long> toppings) {
+    public void setToppings(Set<ToppingRequest> toppings) {
         this.toppings = toppings;
     }
 

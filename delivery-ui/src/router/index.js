@@ -6,6 +6,7 @@ import Profile from '../views/ProfilePage'
 import Register from '../views/Register'
 import About from '../views/About'
 import Menu from '@/views/Menu'
+import ManageProducts from '@/views/ManageProducts'
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,6 +39,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/manage/products',
+    name: 'Manage Products',
+    component: ManageProducts
   },
   {
     path: '*',
