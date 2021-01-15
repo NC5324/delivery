@@ -10,7 +10,6 @@ import {
   BFormGroup,
   BFormInput,
   BButton,
-  BCardGroup,
   BFormInvalidFeedback,
   BFormValidFeedback,
   BFormSpinbutton,
@@ -30,7 +29,6 @@ Vue.component('b-form-input', BFormInput)
 Vue.component('b-form-invalid-feedback', BFormInvalidFeedback)
 Vue.component('b-form-valid-feedback', BFormValidFeedback)
 Vue.component('b-button', BButton)
-Vue.component('b-card-group', BCardGroup)
 Vue.component('b-form-checkbox-group', BFormCheckboxGroup)
 Vue.component('b-form-checkbox', BFormCheckbox)
 

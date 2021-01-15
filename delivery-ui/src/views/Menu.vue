@@ -7,19 +7,21 @@
             <div v-for="(product, index) in products" :key="product">
               <b-card
                 :title="product.name"
-                :img-src="product.imgSource ? product.imgSource : 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png'"
-                img-alt="Image"
-                img-top
-                style="min-width: 22rem ;max-width: 22rem; min-height: 30rem;"
+                style="min-width: 22rem ;max-width: 22rem; min-height: 36rem;"
                 class="mb-2 mr-2 ml-2 mt-2"
               >
-                <b-card-text>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Pellentesque elit ullamcorper dignissim cras.
-                  </p>
-                  <strong>Toppings: {{product.toppings}}</strong>
-                </b-card-text>
+                <template #header>
+                  <b-card-img :src="product.imgSource ? product.imgSource : 'http://www.dominos.bg/gallery/fmobile/1266medium.png'" alt="image" top>
+                  </b-card-img>
+                </template>
+                <template #default>
+                  <b-card-text style="text-align: left">
+                    <strong>Топинги: </strong>
+                    <div v-for="topping in product.toppings" :key="topping">
+                      {{topping.name}}
+                    </div>
+                  </b-card-text>
+                </template>
                 <template #footer>
                   <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
                   <b-button @click="addToCart(product.id, index)" style="margin-left: 1rem; margin-bottom: 3px;" size="sm" variant="success">Добави в количката</b-button>
