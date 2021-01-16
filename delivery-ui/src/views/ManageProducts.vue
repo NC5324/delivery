@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form>
+    <b-form id="category and stuff">
       <div id="header" style="min-height: 20px"></div>
       <b-form-group
         v-slot="{ ariaDescribedby }"
@@ -206,18 +206,33 @@ export default {
     }
   },
   mounted () {
-    this.getAllToppings()
+    this.getSpecificToppings()
     this.searchProducts()
   },
   methods: {
     searchProducts () {
       console.log('I have been summoned.')
+      this.getSpecificToppings()
       ProductService.getProductsPage(this.filters, this.currentPage, this.perPage).then(
         response => {
           this.products = []
           this.pushAll(this.products, response.data.products)
           this.rows = response.data.totalItems
           // window.scrollTo(0, 0)
+        },
+        error => {
+          this.content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
+    getSpecificToppings () {
+      ToppingService.getToppingsPage(this.filters).then(
+        response => {
+          this.allToppings = response.data.toppings
+          console.log(this.allToppings)
         },
         error => {
           this.content =

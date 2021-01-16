@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { authHeader } from '@/services/auth-header'
 
 const API_URL = 'http://localhost:8080/product'
 
@@ -12,7 +13,6 @@ class ProductService {
       {
         params: {
           name: filters.name == null ? '' : filters.name,
-          description: filters.description == null ? '' : filters.description,
           type: filters.type == null ? '' : filters.type,
           currentPage: currentPage,
           perPage: perPage
@@ -35,7 +35,8 @@ class ProductService {
       {
         params: {
           id: id
-        }
+        },
+        headers: authHeader()
       })
   }
 
@@ -49,6 +50,9 @@ class ProductService {
         price: product.price,
         imgSource: product.imgSource,
         toppings: product.newToppings
+      },
+      {
+        headers: authHeader()
       })
   }
 }

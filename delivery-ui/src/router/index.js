@@ -9,6 +9,7 @@ import Menu from '@/views/Menu'
 import ManageProducts from '@/views/ManageProducts'
 import ManageAccounts from '@/views/ManageAccounts'
 import ManageOrders from '@/views/ManageOrders'
+import ManageToppings from '@/views/ManageToppings'
 Vue.use(VueRouter)
 
 const routes = [
@@ -44,7 +45,7 @@ const routes = [
   },
   {
     path: '/manage/products',
-    name: 'Manage Products',
+    name: 'ManageProduct',
     component: ManageProducts
   },
   {
@@ -56,6 +57,11 @@ const routes = [
     path: '/manage/accounts',
     name: 'Manage Accounts',
     component: ManageAccounts
+  },
+  {
+    path: '/manage/product-options',
+    name: 'ManageTopping',
+    component: ManageToppings
   },
   {
     path: '*',

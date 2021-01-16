@@ -37,7 +37,9 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view/>
+    <div>
+      <router-view/>
+    </div>
     <b-sidebar @shown="onBasketShow" @hidden="onBasketHide"  id="sidebar-right" title="Количка" right bg-variant="dark" text-variant="light">
       <template #footer="{ hide }">
         <div class="d-flex bg-dark text-light align-items-center px-3 py-2">
