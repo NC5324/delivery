@@ -30,7 +30,7 @@ class ProductService {
   }
 
   deleteProductById (id) {
-    console.log(id)
+    console.log('Delete ' + id)
     return axios.delete(API_URL + '/delete',
       {
         params: {
@@ -39,11 +39,11 @@ class ProductService {
       })
   }
 
-  saveProduct (product) {
+  saveProduct (product, newFlag) {
     console.log(product)
     return axios.post(API_URL + '/save',
       {
-        id: product.id,
+        id: newFlag ? null : product.id,
         name: product.name == null ? '' : product.name,
         type: product.type == null ? '' : product.type,
         price: product.price,

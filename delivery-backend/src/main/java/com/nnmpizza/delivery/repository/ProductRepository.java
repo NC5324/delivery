@@ -20,11 +20,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAll();
 
     @Query("SELECT p FROM Product p WHERE " +
-            "LOWER(p.name) " +
-            "LIKE :#{#name == null || #name.isEmpty()? '%' : '%'+#name+'%'} AND " +
             "LOWER(p.type) " +
             "LIKE :#{#type == null || #type.isEmpty()? '%' : '%'+#type+'%'}")
-    Page<Product> findPageProducts(Pageable pageRequest, String name, String type);
+    Page<Product> findPageProducts(Pageable pageRequest, String type);
 
     Optional<Product> findPersonById(Long id);
 }

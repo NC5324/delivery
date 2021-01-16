@@ -7,6 +7,8 @@ import Register from '../views/Register'
 import About from '../views/About'
 import Menu from '@/views/Menu'
 import ManageProducts from '@/views/ManageProducts'
+import ManageAccounts from '@/views/ManageAccounts'
+import ManageOrders from '@/views/ManageOrders'
 Vue.use(VueRouter)
 
 const routes = [
@@ -44,6 +46,16 @@ const routes = [
     path: '/manage/products',
     name: 'Manage Products',
     component: ManageProducts
+  },
+  {
+    path: '/manage/orders',
+    name: 'Manage Orders',
+    component: ManageOrders
+  },
+  {
+    path: '/manage/accounts',
+    name: 'Manage Accounts',
+    component: ManageAccounts
   },
   {
     path: '*',

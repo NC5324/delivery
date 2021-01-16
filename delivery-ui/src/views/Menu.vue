@@ -1,52 +1,59 @@
 <template>
   <div id="content">
     <b-container style="background-image: url(https://images.unsplash.com/photo-1524365521362-0a59611ecbf1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80)" class="center-screen">
-      <b-tabs style="margin-top: 1rem" pills content-class="mt-3">
-        <b-tab title="Пици" active>
-          <b-card-group>
-            <div v-for="(product, index) in products" :key="product">
-              <b-card
-                :title="product.name"
-                style="min-width: 22rem ;max-width: 22rem; min-height: 36rem;"
-                class="mb-2 mr-2 ml-2 mt-2"
-              >
-                <template #header>
-                  <b-card-img :src="product.imgSource ? product.imgSource : 'http://www.dominos.bg/gallery/fmobile/1266medium.png'" alt="image" top>
-                  </b-card-img>
-                </template>
-                <template #default>
-                  <b-card-text style="text-align: left">
-                    <strong>Топинги: </strong>
-                    <div v-for="topping in product.toppings" :key="topping">
-                      {{topping.name}}
-                    </div>
-                  </b-card-text>
-                </template>
-                <template #footer>
-                  <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
-                  <b-button @click="addToCart(product.id, index)" style="margin-left: 1rem; margin-bottom: 3px;" size="sm" variant="success">Добави в количката</b-button>
-                </template>
-              </b-card>
-            </div>
-          </b-card-group>
-          <b-pagination
-            pills
-            align="fill"
-            v-model="currentPage"
-            :per-page="perPage"
-            :total-rows="rows"
-            @input="searchProducts"
-            first-number
-            last-number
-            hide-ellipsis
-            class="mt-4"
-            size="lg"
+      <b-form-radio-group
+        id="btn-radios-2"
+        v-model="filters.type"
+        :aria-describedby="ariaDescribedby"
+        button-variant="outline-dark"
+        name="radio-btn-outline"
+        @change="searchProducts()"
+        buttons
+      >
+        <b-form-radio class="mr-2" value="pizza">Пици</b-form-radio>
+        <b-form-radio class="mr-2" value="dessert">Десерти</b-form-radio>
+        <b-form-radio class="mr-2" value="beverage">Напитки</b-form-radio>
+      </b-form-radio-group>
+      <b-card-group>
+        <div v-for="(product, index) in products" :key="product">
+          <b-card
+            :title="product.name"
+            style="min-width: 22rem ;max-width: 22rem; min-height: 36rem;"
+            class="mb-2 mr-2 ml-2 mt-2"
           >
-          </b-pagination>
-        </b-tab>
-        <b-tab title="Десерти"><p>Това да не ви е сладкарница</p></b-tab>
-        <b-tab title="За пиене"><p>За пиене: вода от чешмата 1лв./200мл.</p></b-tab>
-      </b-tabs>
+            <template #header>
+              <b-card-img :src="product.imgSource ? product.imgSource : 'http://www.dominos.bg/gallery/fmobile/1266medium.png'" alt="image" top>
+              </b-card-img>
+            </template>
+            <template #default>
+              <b-card-text style="text-align: left">
+                <strong>Топинги: </strong>
+                <div v-for="topping in product.toppings" :key="topping">
+                  {{topping.name}}
+                </div>
+              </b-card-text>
+            </template>
+            <template #footer>
+              <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
+              <b-button @click="addToCart(product.id, index)" style="margin-left: 1rem; margin-bottom: 3px;" size="sm" variant="success">Добави в количката</b-button>
+            </template>
+          </b-card>
+        </div>
+      </b-card-group>
+      <b-pagination
+        pills
+        align="fill"
+        v-model="currentPage"
+        :per-page="perPage"
+        :total-rows="rows"
+        @input="searchProducts"
+        first-number
+        last-number
+        hide-ellipsis
+        class="mt-4"
+        size="lg"
+      >
+      </b-pagination>
     </b-container>
     <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png" alt="">
   </div>
@@ -76,7 +83,6 @@ export default {
         { key: 'actions', label: 'Действия' }
       ],
       filters: [{
-        name: 'name',
         type: 'type'
       }]
     }
