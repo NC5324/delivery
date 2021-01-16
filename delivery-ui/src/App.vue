@@ -16,7 +16,7 @@
           <b-nav-item href="/menu"><b-button variant="dark">Меню</b-button> </b-nav-item>
           <b-nav-item right v-if="showModeratorBoards"><b-button variant="dark">Управление на поръчки</b-button></b-nav-item>
           <b-nav-item href="/manage/products" right v-if="showAdminBoards"><b-button variant="dark">Управление на продукти</b-button></b-nav-item>
-          <b-nav-item right v-if="showAdminBoards"><b-button variant="dark">Управление на акаунти</b-button></b-nav-item>
+          <b-nav-item href="/manage/accounts" right v-if="showAdminBoards"><b-button variant="dark">Управление на акаунти</b-button></b-nav-item>
         </b-navbar-nav>
       </b-collapse>
 
