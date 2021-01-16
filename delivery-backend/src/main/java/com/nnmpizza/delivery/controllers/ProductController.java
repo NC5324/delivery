@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -34,6 +35,7 @@ public class ProductController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> saveProduct(@RequestBody ProductRequest productRequest) {
         boolean isNew = productRequest.getId() == null;
 
@@ -93,6 +95,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delProduct(@RequestParam Long id){
         if(ProductRepository.existsById(id)) {
             ProductRepository.deleteById(id);

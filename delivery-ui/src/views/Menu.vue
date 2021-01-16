@@ -1,19 +1,23 @@
 <template>
   <div id="content">
     <b-container style="background-image: url(https://images.unsplash.com/photo-1524365521362-0a59611ecbf1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80)" class="center-screen">
-      <b-form-radio-group
-        id="btn-radios-2"
-        v-model="filters.type"
-        :aria-describedby="ariaDescribedby"
-        button-variant="outline-dark"
-        name="radio-btn-outline"
-        @change="searchProducts()"
-        buttons
+      <b-form-group
+        v-slot="{ ariaDescribedby }"
       >
-        <b-form-radio class="mr-2" value="pizza">Пици</b-form-radio>
-        <b-form-radio class="mr-2" value="dessert">Десерти</b-form-radio>
-        <b-form-radio class="mr-2" value="beverage">Напитки</b-form-radio>
-      </b-form-radio-group>
+        <b-form-radio-group
+          id="btn-radios-2"
+          v-model="filters.type"
+          :aria-describedby="ariaDescribedby"
+          button-variant="outline-dark"
+          name="radio-btn-outline"
+          @change="searchProducts()"
+          buttons
+        >
+          <b-form-radio class="mr-2" value="pizza">Пици</b-form-radio>
+          <b-form-radio class="mr-2" value="dessert">Десерти</b-form-radio>
+          <b-form-radio class="mr-2" value="beverage">Напитки</b-form-radio>
+        </b-form-radio-group>
+      </b-form-group>
       <b-card-group>
         <div v-for="(product, index) in products" :key="product">
           <b-card
@@ -83,7 +87,7 @@ export default {
         { key: 'actions', label: 'Действия' }
       ],
       filters: [{
-        type: 'type'
+        type: 'pizza'
       }]
     }
   },

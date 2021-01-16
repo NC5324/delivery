@@ -23,6 +23,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "LOWER(p.type) " +
             "LIKE :#{#type == null || #type.isEmpty()? '%' : '%'+#type+'%'}")
     Page<Product> findPageProducts(Pageable pageRequest, String type);
-
-    Optional<Product> findPersonById(Long id);
 }

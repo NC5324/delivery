@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://cdn.hipwallpaper.com/i/3/15/dqIeNr.jpg); background-repeat: no-repeat; background-size: 100% 100%" id="app">
-    <b-navbar sticky toggleable="xl" :variant="this.nav_bg_variant">
+    <b-navbar sticky toggleable="xl" variant="white">
       <b-navbar-brand  href="/">
         <img width="200px" height="60px" src="https://www.pngkey.com/png/full/490-4902011_new-york-pizza-logo-png-transparent-new-york.png" alt="brandLogo">
       </b-navbar-brand>
@@ -68,7 +68,7 @@ import ProductService from './services/product-service'
 export default {
   data () {
     return {
-      nav_bg_variant: '',
+      nav_bg_variant: 'white',
       products: [{
         id: '',
         name: '',
@@ -80,6 +80,10 @@ export default {
       show: false,
       initial: true
     }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll)
+    this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
   },
   computed: {
     loggedIn () {
