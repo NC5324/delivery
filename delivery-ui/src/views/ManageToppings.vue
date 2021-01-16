@@ -108,7 +108,7 @@ export default {
         { key: 'actions', label: 'Действия' }
       ],
       filters: {
-        type: 'pizza'
+        type: null
       },
       blankTopping: new Topping(null, 'Нов топинг', 'pizza')
     }
