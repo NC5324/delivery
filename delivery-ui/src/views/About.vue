@@ -5,7 +5,7 @@
     </div>
     <div class="row row-grid align-items-start container">
       <div class="card col-md-6 bg-transparent border-0">
-        <img src="gallery-6.jpg" width="500" height="600" />
+        <img src="https://pizzalab.bg/img/gallery/gallery-6.jpg" width="500" height="600" />
       </div>
      <div class="card col-md-6 bg-transparent border-0">
       Пицария New "York Pizza the Original" е основана през 2010г.
