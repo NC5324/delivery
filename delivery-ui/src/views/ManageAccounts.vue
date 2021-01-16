@@ -22,8 +22,8 @@
             </template>
             <template #default>
               <b-card-text style="text-align: left">
-                <strong>Топинги: </strong>
-                <div v-for="topping in row.item.newToppings" :key="topping">
+                <strong>Роли: </strong>
+                <div v-for="topping in row.item.newRoles" :key="topping">
                   {{topping.name}}
                 </div>
               </b-card-text>
@@ -34,33 +34,36 @@
           </b-card>
           <b-card id="edit" class="mb-2 mr-2 ml-2 mt-2">
             <b-form>
-              <b-form-group id="input-group-1" label="Име на продукт: " label-align="left" label-size="lg" label-for="input-1">
-                <b-form-input size="lg" id="input-1" v-model="row.item.name" type="text"></b-form-input>
+              <b-form-group id="input-group-1" label="Име : " label-align="left" label-for="input-1">
+                <b-form-input size="md" id="input-1" v-model="row.item.firstName" type="text"></b-form-input>
               </b-form-group>
-              <b-form-group id="input-group-2" label="Категория на продукт: " label-align="left" label-size="lg" label-for="input-2">
-                <b-form-input size="lg" id="input-2" v-model="row.item.type" type="text" disabled></b-form-input>
+              <b-form-group id="input-group-2" label="Фамилия: " label-align="left" label-for="input-2">
+                <b-form-input size="md" id="input-2" v-model="row.item.lastName" type="text"></b-form-input>
               </b-form-group>
-              <b-form-group id="input-group-3" label="Цена на продукт: " label-align="left" label-size="lg" label-for="input-3">
-                <b-form-input min="0" size="lg" id="input-3" v-model="row.item.price" type="number"></b-form-input>
+              <b-form-group id="input-group-5" label="E-mail адрес: " label-align="left" label-for="input-4">
+                <b-form-input size="md" id="input-5" v-model="row.item.email" type="text"></b-form-input>
               </b-form-group>
-              <b-form-group id="input-group-4" label="Топинги: " label-align="left" label-size="lg" v-slot="{ ariaDescribedby }">
+              <b-form-group id="input-group-5" label="Телефон: " label-align="left" label-for="input-5">
+                <b-form-input size="md" id="input-5" v-model="row.item.phoneNumber" type="text"></b-form-input>
+              </b-form-group>
+              <b-form-group id="input-group-7" label="Роли: " label-align="left" v-slot="{ ariaDescribedby }">
                 <b-form-checkbox-group
-                  v-model="row.item.newToppings"
+                  v-model="row.item.newRoles"
                   id="checkboxes-4"
                   :aria-describedby="ariaDescribedby"
                   size="lg"
-                  v-for="topping in allToppings" :key="topping"
+                  v-for="role in allRoles" :key="role"
                   stacked
                   align="left"
                 >
-                  <b-form-checkbox :value="topping">{{topping.name}}</b-form-checkbox>
+                  <b-form-checkbox :value="role">{{role.name}}</b-form-checkbox>
                 </b-form-checkbox-group>
               </b-form-group>
             </b-form>
             <template #footer>
               <b-button-group>
-                <b-button class="m-2 text-light" @click="saveProduct(row.item, false)" variant="success">Запази промените</b-button>
-                <b-button class="m-2 text-light" @click="deleteProduct(row.item.id)" variant="danger">Премахни от базата данни</b-button>
+                <b-button class="m-2 text-light" @click="saveMember(row.item, row)" variant="success">Запази промените</b-button>
+                <b-button class="m-2 text-light" @click="deleteMember(row.item.id)" variant="danger">Премахни от базата данни</b-button>
               </b-button-group>
             </template>
           </b-card>
@@ -80,21 +83,67 @@
       size="md"
     >
     </b-pagination>
-    <b-modal v-if="ready" id="newMember" title="Създаване на нова опция на продукт" size="lg">
+    <b-modal id="newMember" title="Създаване на нов профил" size="lg">
       <b-card-group style="margin-bottom: 0.5rem; margin-left: 0.5rem; margin-right: 0.5rem">
+        <b-card id="previewNew"
+                :title="blankMember.firstName + blankMember.lastName"
+                style="max-width: 35rem; min-height: 36rem;"
+                class="mb-2 mr-2 ml-2 mt-2"
+        >
+          <template #header>
+            <b-card-img src="https://secure.gravatar.com/avatar/246e93e60153c5aee1f1e5dd8ecd9e3b?s=256&d=mm&r=g" alt="profile pic" top >
+            </b-card-img>
+          </template>
+          <template #default>
+            <b-card-text style="text-align: left">
+              <strong>Роли: </strong>
+              <div v-for="role in blankMember.newRoles" :key="role">
+                {{role.name}}
+              </div>
+            </b-card-text>
+          </template>
+          <template #footer>
+            {{blankMember.phoneNumber}}
+          </template>
+        </b-card>
         <b-card id="editNew" class="mb-2 mr-2 ml-2 mt-2">
           <b-form>
-            <b-form-group id="input-group-1" label="Име на продукт: " label-align="left" label-size="lg" label-for="input-1">
-              <b-form-input size="lg" id="input-1" v-model="blankMember.name" type="text"></b-form-input>
+            <b-form-group id="input-group-1" label="Име : " label-align="left" label-for="input-1">
+              <b-form-input size="md" id="input-1" v-model="blankMember.firstName" type="text"></b-form-input>
             </b-form-group>
-            <b-form-group id="input-group-2" label="Категория на продукт: " label-align="left" label-size="lg" label-for="input-2">
-              <b-form-input size="lg" id="input-2" v-model="blankMember.type" type="text"></b-form-input>
+            <b-form-group id="input-group-2" label="Фамилия: " label-align="left" label-for="input-2">
+              <b-form-input size="md" id="input-2" v-model="blankMember.lastName" type="text"></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-6" label="Потребителско име: " label-align="left" label-for="input-6">
+              <b-form-input size="md" id="input-6" v-model="blankMember.username" type="text"></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-8" label="Парола: " label-align="left" label-for="input-8">
+              <b-form-input size="md" id="input-8" v-model="blankMember.password" type="text"></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-5" label="E-mail адрес: " label-align="left" label-for="input-4">
+              <b-form-input size="md" id="input-5" v-model="blankMember.email" type="text"></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-5" label="Телефон: " label-align="left" label-for="input-5">
+              <b-form-input size="md" id="input-5" v-model="blankMember.phoneNumber" type="text"></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-group-7" label="Роли: " label-align="left" v-slot="{ ariaDescribedby }">
+              <b-form-checkbox-group
+                v-model="blankMember.newRoles"
+                id="checkboxes-4"
+                :aria-describedby="ariaDescribedby"
+                size="lg"
+                v-for="role in allRoles" :key="role"
+                stacked
+                align="left"
+              >
+                <b-form-checkbox :value="role">{{role.name}}</b-form-checkbox>
+              </b-form-checkbox-group>
             </b-form-group>
           </b-form>
         </b-card>
       </b-card-group>
       <template #modal-footer = "{ ok, cancel }">
-        <b-button variant="success" @click="saveMember(blankMember); ok;">
+        <b-button variant="success" @click="registerMember(blankMember); ok;">
           Създай
         </b-button>
         <b-button variant="danger" @click="resetBlankMember(); cancel;">
@@ -108,6 +157,7 @@
 
 <script>
 import MemberService from '@/services/member-service'
+import AuthService from '@/services/auth-service'
 import Member from '@/models/member'
 export default {
   name: 'ManageMember',
@@ -126,23 +176,26 @@ export default {
         { key: 'username', label: 'Потребителско име' },
         { key: 'password', label: 'Парола' },
         { key: 'email', label: 'e-mail адрес' },
+        { key: 'phoneNumber', label: 'Телефон' },
         { key: 'actions', label: 'Действия' }
       ],
       filters: {
         type: null
       },
-      blankMember: new Member(null, 'foobar', '', 'foo@bar.com', '0000000000', 'Foo', 'Bar')
+      allRoles: [],
+      blankMember: new Member(null, 'foobar', '', 'foo@bar.com', '0000000000', 'Foo', 'Bar', [], [])
     }
   },
   mounted () {
+    this.getAllRoles()
     this.searchMembers()
   },
   methods: {
     searchMembers () {
-      console.log('I have been summoned.')
       MemberService.getAllMembers().then(
         response => {
-          this.members = response.data
+          this.members = []
+          this.pushAll(this.members, response.data)
           this.rows = response.data.length
           this.perPage = response.data.length
         },
@@ -154,18 +207,46 @@ export default {
         }
       )
     },
-    resetBlankMember () {
-      this.blankMember = new Member(null, 'foobar', '', 'foo@bar.com', '0000000000', 'Foo', 'Bar')
+    pushAll (target, input) {
+      for (let i = 0; i < input.length; i++) {
+        const p = input[i]
+        target.push(new Member(p.id, p.username, p.password, p.email, p.phoneNumber, p.firstName, p.lastName, p.roles, p.roles))
+      }
     },
-    saveMember (member, newFlag, row) {
-      MemberService.saveMember(member, newFlag).then(
+    getAllRoles () {
+      MemberService.getAllRoles().then(
         response => {
-          if (newFlag) {
-            this.$router.go()
-          } else {
-            row.toggleDetails()
-            this.showModal(response.data.message)
-          }
+          this.allRoles = response.data
+        },
+        error => {
+          this.content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
+    resetBlankMember () {
+      this.blankMember = new Member(null, 'foobar', '', 'foo@bar.com', '0000000000', 'Foo', 'Bar', [], [])
+    },
+    saveMember (member, row) {
+      MemberService.saveMember(member).then(
+        response => {
+          row.toggleDetails()
+          this.showModal(response.data.message)
+        },
+        error => {
+          this.content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
+    registerMember () {
+      AuthService.adminRegister(this.blankMember).then(
+        () => {
+          this.$router.go()
         },
         error => {
           this.content =

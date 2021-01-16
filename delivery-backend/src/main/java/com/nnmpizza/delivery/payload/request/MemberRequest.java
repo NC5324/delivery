@@ -1,5 +1,9 @@
 package com.nnmpizza.delivery.payload.request;
 
+import com.nnmpizza.delivery.payload.beans.PojoRole;
+
+import java.util.Set;
+
 public class MemberRequest {
     private Long id;
     private String username;
@@ -8,16 +12,14 @@ public class MemberRequest {
     private String phoneNumber;
     private String firstName;
     private String lastName;
+    private Set<PojoRole> roles;
 
+    public Set<PojoRole> getRoles() {
+        return roles;
+    }
 
-    public MemberRequest(Long id, String username, String password, String email, String phoneNumber, String firstName, String lastName) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public void setRoles(Set<PojoRole> roles) {
+        this.roles = roles;
     }
 
     public String getFirstName() {

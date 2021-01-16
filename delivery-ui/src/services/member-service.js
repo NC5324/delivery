@@ -11,6 +11,30 @@ class MemberService {
       })
   }
 
+  getAllRoles () {
+    return axios.get(API_URL + '/roles/all',
+      {
+        headers: authHeader()
+      })
+  }
+
+  saveMember (request) {
+    return axios.post(API_URL + '/save',
+      {
+        id: request.id,
+        username: request.username,
+        password: request.password,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        phoneNumber: request.phoneNumber,
+        email: request.email,
+        roles: request.newRoles
+      },
+      {
+        headers: authHeader()
+      })
+  }
+
   getMembersPage (filters, currentPage, perPage) {
     return axios.get(API_URL + '/search/page',
       {
@@ -29,19 +53,6 @@ class MemberService {
         params: {
           id: id
         },
-        headers: authHeader()
-      })
-  }
-
-  saveMember (member, newFlag) {
-    console.log(member)
-    return axios.post(API_URL + '/save',
-      {
-        id: newFlag ? null : member.id,
-        name: member.name == null ? '' : member.name,
-        type: member.type == null ? '' : member.type
-      },
-      {
         headers: authHeader()
       })
   }

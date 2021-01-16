@@ -34,27 +34,11 @@ public class Member {
     private String phoneNumber;
 
     @ManyToMany
-    @JsonIgnore
+    //@JsonIgnore
     @JoinTable(name = "member_role",
         joinColumns = @JoinColumn(name="member_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
-    public Member(Long id,
-                  String username,
-                  String password,
-                  String email,
-                  String firstName,
-                  String lastName,
-                  String phoneNumber) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-    }
 
     public Member(String username, String email, String password) {
         this.username = username;
@@ -75,7 +59,6 @@ public class Member {
     public Member() {
 
     }
-
 
 
     public Long getId() {
