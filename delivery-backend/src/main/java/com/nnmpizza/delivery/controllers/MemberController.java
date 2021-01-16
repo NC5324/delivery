@@ -1,13 +1,22 @@
 package com.nnmpizza.delivery.controllers;
 
 import com.nnmpizza.delivery.models.Member;
+import com.nnmpizza.delivery.models.Role;
+import com.nnmpizza.delivery.payload.beans.PojoRole;
 import com.nnmpizza.delivery.payload.request.MemberRequest;
+import com.nnmpizza.delivery.payload.request.SignupRequest;
+import com.nnmpizza.delivery.payload.response.MessageResponse;
 import com.nnmpizza.delivery.repository.MemberRepository;
+import com.nnmpizza.delivery.repository.RoleRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -15,9 +24,12 @@ import java.util.List;
 public class MemberController {
 
     final MemberRepository memberRepository;
+    final RoleRepository roleRepository;
 
-    public MemberController(MemberRepository memberRepository){
+
+    public MemberController(MemberRepository memberRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder){
         this.memberRepository = memberRepository;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/all")
@@ -26,13 +38,39 @@ public class MemberController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_MODERATOR') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> saveMember(@RequestBody MemberRequest memberRequest) {
-        var member = new Member(memberRequest);
-        memberRepository.save(member);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> saveMember (@Valid @RequestBody MemberRequest memberRequest) {
+        boolean isNew = memberRequest.getId() == null;
 
-        return ResponseEntity.ok(String.format("member with ID: %d saved successfully", memberRequest.getId()));
+        Member user = new Member(memberRequest);
+
+        Set<PojoRole> jsonRoles = memberRequest.getRoles();
+        Set<Role> roles = new HashSet<>();
+
+        if (jsonRoles.size() == 0) {
+            Role userRole = roleRepository.findByName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            for(var jsonRole : jsonRoles) {
+                var role = roleRepository.findByName(jsonRole.getName())
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles.add(role);
+            }
+        }
+
+        user.setRoles(roles);
+        memberRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse(isNew ? "Профилът беше създаден успешно!" : "Профилът беше редактиран успешно!"));
     }
+
+    @GetMapping("/roles/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Role> getAllRoles(){
+        return roleRepository.findAll();
+    }
+
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ADMIN')")

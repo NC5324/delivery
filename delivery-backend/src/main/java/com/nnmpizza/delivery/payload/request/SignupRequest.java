@@ -1,6 +1,5 @@
 package com.nnmpizza.delivery.payload.request;
-
-import com.nnmpizza.delivery.models.Role;
+import com.nnmpizza.delivery.payload.beans.PojoRole;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +7,12 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class SignupRequest {
+
+    private Long id;
+
+    private String firstName;
+    private String lastName;
+    private String telephoneNumber;
 
     @NotBlank
     @Size(min = 3, max = 20)
@@ -22,7 +27,39 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Set<String> roles;
+    private Set<PojoRole> roles;
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -48,11 +85,11 @@ public class SignupRequest {
         this.email = email;
     }
 
-    public Set<String> getRoles() {
+    public Set<PojoRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<PojoRole> roles) {
         this.roles = roles;
     }
 }

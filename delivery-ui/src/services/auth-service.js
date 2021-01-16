@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { authHeader } from '@/services/auth-header'
 
 const API_URL = 'http://localhost:8080/api/auth'
 
@@ -30,6 +31,22 @@ class AuthService {
         username: user.username,
         password: user.password,
         email: user.email
+      })
+  }
+
+  adminRegister (request) {
+    return axios.post(API_URL + '/admin/signup',
+      {
+        username: request.username,
+        password: request.password,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        phoneNumber: request.phoneNumber,
+        email: request.email,
+        roles: request.newRoles
+      },
+      {
+        headers: authHeader()
       })
   }
 }

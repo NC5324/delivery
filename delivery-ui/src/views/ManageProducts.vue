@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-form>
+    <b-form id="category and stuff">
+      <div id="header" style="min-height: 20px"></div>
       <b-form-group
         v-slot="{ ariaDescribedby }"
       >
@@ -17,6 +18,8 @@
           <b-form-radio class="mr-2" value="dessert">Десерти</b-form-radio>
           <b-form-radio class="mr-2" value="beverage">Напитки</b-form-radio>
         </b-form-radio-group>
+        <b-button class="mr-2" variant="success" @click="resetBlankProduct()" v-b-modal.newProduct>Нов продукт</b-button>
+        <b-button class="mr-2" variant="primary" href="/manage/product-options">Управление на опции</b-button>
       </b-form-group>
     </b-form>
     <b-table striped hover stacked="sm" :items="products" :fields="fields" :filters="filters">
@@ -39,9 +42,9 @@
           >
             <template #header>
               <b-card-img :src="row.item.imgSource ? row.item.imgSource :
-               filters.type === 'beverage' ? 'https://image.flaticon.com/icons/png/512/37/37642.png'
+               filters.type === 'beverage' ? 'https://cdn.iconscout.com/icon/free/png-256/beverage-1468789-1242983.png'
                : (filters.type === 'pizza' ? 'http://www.dominos.bg/gallery/fmobile/1266medium.png'
-               : 'http://www.dominos.bg/gallery/fmobile/1266medium.png')" alt="image" top >
+               : 'https://iconarchive.com/download/i109888/lemon-liu/recipes/recipe-dessert-cake.ico')" alt="image" top >
               </b-card-img>
             </template>
             <template #default>
@@ -104,7 +107,6 @@
         size="md"
       >
       </b-pagination>
-    <b-button v-b-modal.newProduct>Нов продукт</b-button>
     <b-modal id="newProduct" title="Създаване на нов продукт" size="lg">
       <b-card-group style="margin-bottom: 0.5rem; margin-left: 0.5rem; margin-right: 0.5rem">
         <b-card id="previewNew"
@@ -113,7 +115,10 @@
                 class="mb-2 mr-2 ml-2 mt-2"
         >
           <template #header>
-            <b-card-img :src="blankProduct.imgSource ? blankProduct.imgSource : 'http://www.dominos.bg/gallery/fmobile/1266medium.png'" alt="image" top>
+            <b-card-img :src="blankProduct.imgSource ? blankProduct.imgSource :
+               filters.type === 'beverage' ? 'https://cdn.iconscout.com/icon/free/png-256/beverage-1468789-1242983.png'
+               : (filters.type === 'pizza' ? 'http://www.dominos.bg/gallery/fmobile/1266medium.png'
+               : 'https://iconarchive.com/download/i109888/lemon-liu/recipes/recipe-dessert-cake.ico')" alt="image" top >
             </b-card-img>
           </template>
           <template #default>
@@ -134,7 +139,7 @@
               <b-form-input size="lg" id="input-1" v-model="blankProduct.name" type="text"></b-form-input>
             </b-form-group>
             <b-form-group id="input-group-2" label="Категория на продукт: " label-align="left" label-size="lg" label-for="input-2">
-              <b-form-input size="lg" id="input-2" v-model="blankProduct.type" type="text"></b-form-input>
+              <b-form-input size="lg" id="input-2" v-model="blankProduct.type" type="text" disabled></b-form-input>
             </b-form-group>
             <b-form-group id="input-group-3" label="Цена на продукт: " label-align="left" label-size="lg" label-for="input-3">
               <b-form-input min="0" size="lg" id="input-3" v-model="blankProduct.price" type="number"></b-form-input>
@@ -164,7 +169,7 @@
         </b-button>
       </template>
     </b-modal>
-    <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png" alt="">
+    <div id="footer" style="min-height: 20px"></div>
   </div>
 </template>
 
@@ -197,22 +202,37 @@ export default {
           type: ''
         }
       ],
-      blankProduct: new Product(null, 'Нов продукт', 0, 'pizza', null, [], [])
+      blankProduct: new Product(null, 'Нов продукт', 0, '', null, [], [])
     }
   },
   mounted () {
-    this.getAllToppings()
+    this.getSpecificToppings()
     this.searchProducts()
   },
   methods: {
     searchProducts () {
       console.log('I have been summoned.')
+      this.getSpecificToppings()
       ProductService.getProductsPage(this.filters, this.currentPage, this.perPage).then(
         response => {
           this.products = []
           this.pushAll(this.products, response.data.products)
           this.rows = response.data.totalItems
           // window.scrollTo(0, 0)
+        },
+        error => {
+          this.content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
+    getSpecificToppings () {
+      ToppingService.getToppingsPage(this.filters).then(
+        response => {
+          this.allToppings = response.data.toppings
+          console.log(this.allToppings)
         },
         error => {
           this.content =
@@ -237,7 +257,7 @@ export default {
       )
     },
     resetBlankProduct () {
-      this.blankProduct = new Product(null, 'Нов продукт', 0, '', null, [], [])
+      this.blankProduct = new Product(null, 'Нов продукт', 0, this.filters.type, null, [], [])
     },
     pushAll (target, input) {
       for (let i = 0; i < input.length; i++) {

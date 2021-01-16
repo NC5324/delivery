@@ -2,6 +2,7 @@ package com.nnmpizza.delivery.controllers;
 
 import com.nnmpizza.delivery.models.Member;
 import com.nnmpizza.delivery.models.Role;
+import com.nnmpizza.delivery.payload.beans.PojoRole;
 import com.nnmpizza.delivery.payload.request.LoginRequest;
 import com.nnmpizza.delivery.payload.request.SignupRequest;
 import com.nnmpizza.delivery.payload.response.JwtResponse;
@@ -62,7 +63,7 @@ public class AuthController{
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> userRegister(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -92,60 +93,46 @@ public class AuthController{
     }
 
     @PostMapping("/admin/signup")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> registerAdmin (@Valid @RequestBody SignupRequest signUpRequest) {
-        boolean isNew = !userRepository.existsByUsername(signUpRequest.getUsername());
-
-        Member user;
-        if (isNew) {
-            user = new Member(signUpRequest.getUsername(),
-                    signUpRequest.getEmail(),
-                    passwordEncoder.encode(signUpRequest.getPassword()));
-        } else {
-            user = userRepository.findByUsername(signUpRequest.getUsername()).get();
+    public ResponseEntity<?> adminRegister(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
         }
-        Set<String> strRoles = signUpRequest.getRoles();
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        // Create new user's account
+        Member user = new Member(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                passwordEncoder.encode(signUpRequest.getPassword()));
+
+        user.setFirstName(signUpRequest.getFirstName());
+        user.setLastName(signUpRequest.getLastName());
+        user.setPhoneNumber(signUpRequest.getTelephoneNumber());
+
+        Set<PojoRole> jsonRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
+        if (jsonRoles.size() == 0) {
             Role userRole = roleRepository.findByName("ROLE_USER")
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
-            Role adminRole = roleRepository.findByName("ROLE_ADMIN")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-
-            Role modRole = roleRepository.findByName("ROLE_MODERATOR")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(modRole);
-
-            Role userRole = roleRepository.findByName("ROLE_USER")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        roles.add(adminRole);
-                        roles.add(modRole);
-                        roles.add(userRole);
-
-                        break;
-                    case "mod":
-                        roles.add(modRole);
-                        roles.add(userRole);
-
-                        break;
-                    default:
-                        roles.add(userRole);
-                        break;
-                }
-            });
+            for(var jsonRole : jsonRoles) {
+                var role = roleRepository.findByName(jsonRole.getName())
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles.add(role);
+            }
         }
-
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse(isNew ? "User registered successfully!" : "User updated successfully!"));
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
 }

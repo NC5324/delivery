@@ -1,33 +1,24 @@
 <template>
   <div>
     <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="4000"
-      controls
+      id="carousel-fade"
+      style="text-shadow: 0px 0px 2px #000"
+      fade
       indicators
-      background="#ababab"
-      img-width="1024"
-      img-height="300"
-      style="text-shadow: 1px 1px 2px #333;"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
     >
-      <!-- Text slides with image -->
       <b-carousel-slide
-        class="carousel-item"
-        caption="First slide"
-        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        img-src="https://www.dominos.bg/images/banners/416_bg_banner.jpg"
+        caption="Second Slide"
+        img-src="https://irp-cdn.multiscreensite.com/96de223d/dms3rep/multi/desktop/jumbotron9_eq0Of8AMTw2mdEYBqwdO-1450x600.jpg"
       ></b-carousel-slide>
-
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="http://www.dominos.bg/images/banners/406_bg_banner.jpg">
-        <h1>Hello world!</h1>
-      </b-carousel-slide>
-
-      <!-- Slides with image only -->
-      <b-carousel-slide img-src="https://www.dominos.bg/images/banners/499_bg_banner.jpg"></b-carousel-slide>
+      <b-carousel-slide
+        caption="First slide"
+        img-src="https://irp-cdn.multiscreensite.com/96de223d/dms3rep/multi/desktop/jumbotron10-1450x600.jpg"
+      ></b-carousel-slide>
+      <b-carousel-slide
+        caption="Third Slide"
+        img-src="https://irp-cdn.multiscreensite.com/96de223d/dms3rep/multi/desktop/jumbotron6_9SkyhFecTAKDGx3JtpYa-1450x600.jpg"
+      ></b-carousel-slide>
+      <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png" alt="">
     </b-carousel>
   </div>
 </template>

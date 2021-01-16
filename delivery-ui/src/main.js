@@ -22,7 +22,7 @@ import {
   NavbarPlugin,
   TabsPlugin,
   ModalPlugin,
-  CarouselPlugin, TablePlugin, PaginationPlugin, CardPlugin, SidebarPlugin, AvatarPlugin, BootstrapVueIcons
+  CarouselPlugin, TablePlugin, PaginationPlugin, CardPlugin, SidebarPlugin, AvatarPlugin, BootstrapVueIcons, JumbotronPlugin
 } from 'bootstrap-vue'
 
 Vue.component('b-form-spinbutton', BFormSpinbutton)
@@ -49,6 +49,7 @@ Vue.use(SidebarPlugin)
 Vue.use(AvatarPlugin)
 Vue.use(BootstrapVueIcons)
 Vue.use(ModalPlugin)
+Vue.use(JumbotronPlugin)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
