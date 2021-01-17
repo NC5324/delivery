@@ -53,17 +53,19 @@
                 <b-icon-pencil></b-icon-pencil>
                 Редактирай
               </b-button>
+
               <b-modal id="selectImage" title="Избор на снимка" size="lg">
-                <nc-choose-files></nc-choose-files>
+                <nc-choose-files  @nc-on-confirm="handleConfirm(row.item)"></nc-choose-files>
                 <template #modal-footer = "{ ok, cancel }">
-                  <b-button variant="success" @click="saveImage(row.item); ok;">
+                  <b-button variant="success" @click="saveImage(row.item); ok; $bvModal.hide('selectImage')">
                     Запази
                   </b-button>
-                  <b-button variant="danger" @click="resetImageSelection(); cancel;">
+                  <b-button variant="danger" @click="resetImageSelection(); cancel; $bvModal.hide('selectImage')">
                     Откажи
                   </b-button>
                 </template>
               </b-modal>
+
             </template>
             <template #default>
               <b-card-text style="text-align: left">
@@ -305,6 +307,10 @@ export default {
       if (selectedImage) {
         product.imgSource = selectedImage.url
       }
+    },
+    handleConfirm (product) {
+      this.saveImage(product)
+      this.$bvModal.hide('selectImage')
     },
     resetImageSelection () {
       localStorage.removeItem('selectedProductImage')

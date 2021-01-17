@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,5 +97,14 @@ public class FileController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
                 .body(fileDB.getData());
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @Transactional
+    public ResponseEntity<?> deleteFileByName(@RequestParam String name){
+        fileRepository.deleteByName(name);
+
+        return ResponseEntity.ok("Deleted successfully.");
     }
 }

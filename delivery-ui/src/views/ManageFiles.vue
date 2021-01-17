@@ -1,49 +1,32 @@
 <template>
   <div>
-    <div v-if="currentFile" class="progress">
-      <div
-        class="progress-bar progress-bar-info progress-bar-striped"
-        role="progressbar"
-        :aria-valuenow="progress"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        :style="{ width: progress + '%' }"
-      >
-        {{ progress }}%
-      </div>
-    </div>
-
     <label class="btn btn-default">
-      <input type="file" ref="file" @change="selectFile"/>
+      <input type="file" multiple @change="selectFile" />
     </label>
 
-    <button class="btn btn-success" @click="upload">
+    <button class="btn btn-success"
+            :disabled="!selectedFiles"
+            @click="uploadFiles"
+    >
       Upload
     </button>
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      controls
-      indicators
-      background="gray"
-      :interval="0"
-      style="text-shadow: 1px 1px 2px #333;"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <!-- Text slides with image -->
-      <b-carousel-slide v-for="index in totalPages" :key="index">
-        <template #img>
-          <b-row>
-            <div style="min-width: 100%">
-              <b-button v-for="(file, index) in fileInfos" :key="index" variant="transparent" @click="changeSelected(file)">
-                <b-img thumbnail fluid :src="file.url" :alt="file.name"></b-img>
-              </b-button>
-            </div>
-          </b-row>
-        </template>
-      </b-carousel-slide>
-    </b-carousel>
+    <b-table style="text-align: left" stacked="lg" striped hover :items="fileInfos" :fields="fields">
+      <template #cell(url)="imgRow">
+        <b-img thumbnail fluid :src="imgRow.item.url" width="150rem" height="150rem" :alt="imgRow.item.name"></b-img>
+      </template>
+      <template #cell(actions)="row">
+        <b-button
+          v-if="$router.currentRoute.fullPath === '/manage/files'"
+          style="width: 100%;"
+          variant="danger"
+          @click="deleteFileByName(row.item.name)">Изтрий</b-button>
+        <b-button
+          v-if="$router.currentRoute.fullPath === '/manage/products'"
+          style="width: 100%;"
+          variant="success"
+          @click="emitRequest(row.item)">Избери</b-button>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -51,32 +34,35 @@
 import FileService from '../services/files-service'
 export default {
   name: 'ManageFiles',
+  props: {
+    myProp: { type: Function }
+  },
   data () {
     return {
       selectedFiles: undefined,
-      currentFile: undefined,
-      progress: 0,
+      progressInfos: [],
       message: '',
-      slide: 0,
-      sliding: null,
+
+      selectedPath: '',
+
       fileInfos: [],
-      currentPage: 1,
-      perPage: 3,
-      totalItems: 0,
-      totalPages: 5,
+      fields: [
+        { key: 'name', label: 'Име' },
+        { key: 'url', label: 'Снимка' },
+        { key: 'size', label: 'Размер' },
+        { key: 'actions', label: 'Действия' }
+      ],
       filters: {}
     }
   },
   mounted () {
-    this.searchFiles()
+    this.getAllFiles()
   },
   methods: {
-    searchFiles () {
-      FileService.getFilesPage(this.filters, this.currentPage, this.perPage).then(
+    getAllFiles () {
+      FileService.getFiles().then(
         response => {
-          this.fileInfos = response.data.files
-          this.totalItems = FileService.getFilesCount()
-          this.totalPages = this.totalItems / this.perPage
+          this.fileInfos = response.data
         },
         error => {
           this.content =
@@ -87,38 +73,37 @@ export default {
       )
     },
     selectFile () {
-      this.selectedFiles = this.$refs.file.files
+      this.progressInfos = []
+      this.selectedFiles = event.target.files
     },
-    upload () {
-      this.progress = 0
+    uploadFiles () {
+      this.message = ''
 
-      this.currentFile = this.selectedFiles.item(0)
-      FileService.upload(this.currentFile, event => {
-        this.progress = Math.round((100 * event.loaded) / event.total)
-      })
-        .then(response => {
-          this.message = response.data.message
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.upload(i, this.selectedFiles[i])
+      }
+    },
+    upload (idx, file) {
+      FileService.upload(file)
+        .then(() => {
           return FileService.getFiles()
         })
-        .then(files => {
-          this.fileInfos = files.data
+        .then((response) => {
+          this.fileInfos = response.data
         })
-        .catch(() => {
-          this.progress = 0
-          this.message = 'Could not upload the file!'
-          this.currentFile = undefined
+    },
+    deleteFileByName (name) {
+      FileService.deleteFileByName(name)
+        .then(() => {
+          return FileService.getFiles()
         })
-
-      this.selectedFiles = undefined
+        .then((response) => {
+          this.fileInfos = response.data
+        })
     },
-    onSlideStart (slide) {
-      slide = slide + 1
-      this.currentPage = slide
-      this.searchFiles()
-      this.sliding = true
-    },
-    onSlideEnd (slide) {
-      this.sliding = false
+    emitRequest (item) {
+      this.changeSelected(item)
+      this.$emit('nc-on-confirm')
     },
     changeSelected (item) {
       if (this.$router.currentRoute.fullPath === '/manage/products') {
