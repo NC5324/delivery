@@ -1,5 +1,5 @@
 package com.nnmpizza.delivery.payload.request;
-import com.nnmpizza.delivery.payload.beans.PojoRole;
+import com.nnmpizza.delivery.payload.beans.RoleBean;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -27,7 +27,7 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Set<PojoRole> roles;
+    private Set<RoleBean> roles;
 
     public String getTelephoneNumber() {
         return telephoneNumber;
@@ -85,11 +85,11 @@ public class SignupRequest {
         this.email = email;
     }
 
-    public Set<PojoRole> getRoles() {
+    public Set<RoleBean> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<PojoRole> roles) {
+    public void setRoles(Set<RoleBean> roles) {
         this.roles = roles;
     }
 }

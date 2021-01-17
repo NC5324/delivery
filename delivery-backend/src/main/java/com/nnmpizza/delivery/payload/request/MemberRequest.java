@@ -1,6 +1,6 @@
 package com.nnmpizza.delivery.payload.request;
 
-import com.nnmpizza.delivery.payload.beans.PojoRole;
+import com.nnmpizza.delivery.payload.beans.RoleBean;
 
 import java.util.Set;
 
@@ -12,13 +12,13 @@ public class MemberRequest {
     private String phoneNumber;
     private String firstName;
     private String lastName;
-    private Set<PojoRole> roles;
+    private Set<RoleBean> roles;
 
-    public Set<PojoRole> getRoles() {
+    public Set<RoleBean> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<PojoRole> roles) {
+    public void setRoles(Set<RoleBean> roles) {
         this.roles = roles;
     }
 

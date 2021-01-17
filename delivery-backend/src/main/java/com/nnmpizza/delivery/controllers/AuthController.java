@@ -2,7 +2,7 @@ package com.nnmpizza.delivery.controllers;
 
 import com.nnmpizza.delivery.models.Member;
 import com.nnmpizza.delivery.models.Role;
-import com.nnmpizza.delivery.payload.beans.PojoRole;
+import com.nnmpizza.delivery.payload.beans.RoleBean;
 import com.nnmpizza.delivery.payload.request.LoginRequest;
 import com.nnmpizza.delivery.payload.request.SignupRequest;
 import com.nnmpizza.delivery.payload.response.JwtResponse;
@@ -12,12 +12,10 @@ import com.nnmpizza.delivery.repository.RoleRepository;
 import com.nnmpizza.delivery.security.jwt.JwtUtils;
 import com.nnmpizza.delivery.security.services.MemberDetails;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,7 +113,7 @@ public class AuthController{
         user.setLastName(signUpRequest.getLastName());
         user.setPhoneNumber(signUpRequest.getTelephoneNumber());
 
-        Set<PojoRole> jsonRoles = signUpRequest.getRoles();
+        Set<RoleBean> jsonRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (jsonRoles.size() == 0) {

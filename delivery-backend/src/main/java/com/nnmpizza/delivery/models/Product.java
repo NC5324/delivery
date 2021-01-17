@@ -31,10 +31,6 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "topping_id"))
     private Set<Topping> toppings = new HashSet<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")
-    private Set<Order> orders = new HashSet<>();
-
     public Product(Long id, String name, String type, Double price, String imgSource) {
         this.id = id;
         this.name = name;
@@ -99,13 +95,5 @@ public class Product {
 
     public void setToppings(Set<Topping> toppings) {
         this.toppings = toppings;
-    }
-
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
     }
 }
