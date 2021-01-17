@@ -2,9 +2,8 @@ package com.nnmpizza.delivery.controllers;
 
 import com.nnmpizza.delivery.models.Member;
 import com.nnmpizza.delivery.models.Role;
-import com.nnmpizza.delivery.payload.beans.PojoRole;
+import com.nnmpizza.delivery.payload.beans.RoleBean;
 import com.nnmpizza.delivery.payload.request.MemberRequest;
-import com.nnmpizza.delivery.payload.request.SignupRequest;
 import com.nnmpizza.delivery.payload.response.MessageResponse;
 import com.nnmpizza.delivery.repository.MemberRepository;
 import com.nnmpizza.delivery.repository.RoleRepository;
@@ -44,7 +43,7 @@ public class MemberController {
 
         Member user = new Member(memberRequest);
 
-        Set<PojoRole> jsonRoles = memberRequest.getRoles();
+        Set<RoleBean> jsonRoles = memberRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (jsonRoles.size() == 0) {

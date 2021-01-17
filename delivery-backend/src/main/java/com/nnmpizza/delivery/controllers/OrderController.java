@@ -1,79 +1,81 @@
 package com.nnmpizza.delivery.controllers;
 
+import com.nnmpizza.delivery.models.MemberNoAuthDetails;
 import com.nnmpizza.delivery.models.Order;
-import com.nnmpizza.delivery.models.Product;
-import com.nnmpizza.delivery.models.Transaction;
-import com.nnmpizza.delivery.payload.beans.ProductQuantity;
+import com.nnmpizza.delivery.models.OrderItem;
+import com.nnmpizza.delivery.payload.beans.OrderItemBean;
 import com.nnmpizza.delivery.payload.request.OrderRequest;
-import com.nnmpizza.delivery.repository.MemberRepository;
-import com.nnmpizza.delivery.repository.OrderRepository;
-import com.nnmpizza.delivery.repository.ProductRepository;
-import com.nnmpizza.delivery.repository.TransactionRepository;
+import com.nnmpizza.delivery.repository.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
 
-    final OrderRepository orderRepository;
-    final MemberRepository memberRepository;
-    final ProductRepository productRepository;
-    final TransactionRepository transactionRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final MemberNoAuthDetailsRepository memberRepository;
+    private final ProductRepository productRepository;
 
-    public OrderController(OrderRepository orderRepository, MemberRepository memberRepository, ProductRepository productRepository, TransactionRepository transactionRepository) {
+    public OrderController(OrderRepository orderRepository, OrderItemRepository orderItemRepository, MemberNoAuthDetailsRepository memberRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
         this.memberRepository = memberRepository;
         this.productRepository = productRepository;
-        this.transactionRepository = transactionRepository;
     }
 
-
     @GetMapping("/all")
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
 
-    @DeleteMapping("/purge")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<?> deleteAllOrders(){
-        orderRepository.deleteAllInBatch();
-        return ResponseEntity.ok("Deleted all order entries");
-    }
-
-
     @PostMapping("/save")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> saveOrder(@RequestBody OrderRequest orderRequest){
+    public ResponseEntity<?> saveOrder(@RequestBody OrderRequest orderRequest) {
+        //Check if member exists
         var member = memberRepository.findById(orderRequest.getMemberId());
-        if(member.isEmpty())
-            return ResponseEntity.ok("Failed to register order");
+        if(member.isEmpty()){
+            return ResponseEntity.badRequest().body("Cannot associate order with a nonexistent member!");
+        }
 
-            var transaction = new Transaction(member.get());
-            transactionRepository.save(transaction);
+        //Check if the order is a new order
+        boolean isNew = orderRequest.getId() == null;
 
-            List<ProductQuantity> requestProducts = orderRequest.getProducts();
-            List<Product> products = new ArrayList<>();
-            for(var requestProduct: requestProducts) {
-                Order order = new Order();
-                order.setTransaction(transaction);
-                var product = productRepository.findById(requestProduct.getProductId());
-                if (product.isEmpty())
-                    return ResponseEntity.ok("Failed to register order");
+        //Create the order
+        Order order = new Order(orderRequest.getId(), member.get(), orderRequest.getStatus());
 
+        //If order has empty array of OrderItems return a bad request
+        Set<OrderItemBean> jsonOrderItems = orderRequest.getOrderItems();
+        if(jsonOrderItems.size() <= 0){
+            return ResponseEntity.badRequest().body("Order is empty!");
+        }
 
-                order.setProduct(product.get());
-                order.setQuantity(requestProduct.getQuantity());
-                order.setStatus(orderRequest.getStatus());
-                orderRepository.save(order);
+        //Map every JSON OrderItem to Java OrderItem
+        Set<OrderItem> orderItems = new HashSet<>();
+        for(var jsonOrderItem : jsonOrderItems) {
+            var product = productRepository.findById(jsonOrderItem.getProductId());
+            if(product.isEmpty()){
+                continue;
             }
+            var orderItem = orderItemRepository
+                    .findByProductAndQuantity(jsonOrderItem.getProductId(), jsonOrderItem.getQuantity())
+                    .orElse(new OrderItem(jsonOrderItem.getId(), product.get(), jsonOrderItem.getQuantity()));
+            orderItemRepository.save(orderItem);
+            orderItems.add(orderItem);
+        }
 
-            return ResponseEntity.ok("Order registered successfully");
+        //Set the OrderItems of the processed order
+        order.setOrderItems(orderItems);
+        orderRepository.save(order);
+        member.get().getOrders().add(order);
+        memberRepository.save(member.get());
+
+        //Return a message depending on the operation performed
+        return ResponseEntity.ok(isNew ? "Accepted new order." : "Edited existing order.");
     }
 }

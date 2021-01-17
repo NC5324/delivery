@@ -1,25 +1,32 @@
 package com.nnmpizza.delivery.payload.request;
 
+import com.nnmpizza.delivery.payload.beans.OrderItemBean;
 import com.nnmpizza.delivery.payload.beans.ProductQuantity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class OrderRequest {
+    private Long id;
     private Long memberId;
-    private List<ProductQuantity> products;
+    private Set<OrderItemBean> orderItems;
     private String status;
 
-    public Long getMemberId() {
-        return memberId;
+    public Long getId() {
+        return id;
     }
 
-    public List<ProductQuantity> getProducts() {
-        return products;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setProducts(List<ProductQuantity> products) {
-        this.products = products;
+    public Set<OrderItemBean> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItemBean> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public String getStatus() {
@@ -28,6 +35,10 @@ public class OrderRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getMemberId() {
+        return memberId;
     }
 
     public void setMemberId(Long memberId) {

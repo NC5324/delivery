@@ -9,17 +9,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "member")
-public class Member {
+public class MemberNoAuthDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "password")
-    private String password;
 
     @Column(name = "email")
     private String email;
@@ -34,58 +28,19 @@ public class Member {
     private String phoneNumber;
 
     @ManyToMany
-    //@JsonIgnore
-    @JoinTable(name = "member_role",
-        joinColumns = @JoinColumn(name="member_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany
     @JsonIgnore
     @JoinTable(name = "member_order",
             joinColumns = @JoinColumn(name="member_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private Set<Order> orders = new HashSet<>();
 
-    public Member(String username, String email, String password) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
-
-    public Member(MemberRequest memberRequest){
-        this.id = memberRequest.getId();
-        this.username = memberRequest.getUsername();
-        this.password = memberRequest.getPassword();
-        this.email = memberRequest.getEmail();
-        this.phoneNumber = memberRequest.getPhoneNumber();
-        this.lastName = memberRequest.getLastName();
-        this.firstName = memberRequest.getFirstName();
-    }
-
-    public Member() {
+    public MemberNoAuthDetails() {
 
     }
 
 
     public Long getId() {
         return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -120,11 +75,11 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }

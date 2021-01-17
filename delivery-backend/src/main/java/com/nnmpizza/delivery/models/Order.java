@@ -1,27 +1,38 @@
 package com.nnmpizza.delivery.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
 public class Order {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "transaction_id")
-    private Transaction transaction;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private MemberNoAuthDetails member;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @ManyToMany
+    //@JsonIgnore
+    @JoinTable(name = "order_orderitem",
+            joinColumns = @JoinColumn(name="order_id"),
+            inverseJoinColumns = @JoinColumn(name = "orderitem_id"))
+    private Set<OrderItem> orderItems = new HashSet<>();
 
-    private Integer quantity;
+    public Order() { }
+
+    public Order(Long id, MemberNoAuthDetails member, String status) {
+        this.id = id;
+        this.member = member;
+        this.status = status;
+    }
+
     private String status;
 
     public void setId(Long id) {
@@ -32,28 +43,20 @@ public class Order {
         return id;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
-    public Product getProduct() {
-        return product;
+    public MemberNoAuthDetails getMember() {
+        return member;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setMember(MemberNoAuthDetails member) {
+        this.member = member;
     }
 
     public String getStatus() {

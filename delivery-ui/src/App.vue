@@ -41,7 +41,7 @@
     <div>
       <router-view/>
     </div>
-    <b-sidebar @shown="onBasketShow" @hidden="onBasketHide"  id="sidebar-right" title="Количка" right bg-variant="dark" text-variant="light">
+    <b-sidebar v-if="false" @shown="onBasketShow" @hidden="onBasketHide"  id="sidebar-right" title="Количка" right bg-variant="dark" text-variant="light">
       <template #footer="{ hide }">
         <div class="d-flex bg-dark text-light align-items-center px-3 py-2">
           <strong class="mr-auto">Обща цена: {{totalPrice}} лв.</strong>

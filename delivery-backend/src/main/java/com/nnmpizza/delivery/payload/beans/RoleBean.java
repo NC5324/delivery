@@ -1,6 +1,6 @@
 package com.nnmpizza.delivery.payload.beans;
 
-public class PojoRole {
+public class RoleBean {
     private Long id;
     private String name;
 
