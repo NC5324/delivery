@@ -16,12 +16,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
-@CrossOrigin("http://localhost:8081")
+@RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/api/files")
 public class FileController {
 
-    @Autowired
-    private FileStorageService storageService;
+    private final FileStorageService storageService;
+
+    public FileController(FileStorageService storageService) {
+        this.storageService = storageService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<MessageResponse> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -37,12 +41,12 @@ public class FileController {
         }
     }
 
-    @GetMapping("/files")
+    @GetMapping("/all")
     public ResponseEntity<List<FileResponse>> getListFiles() {
         List<FileResponse> files = storageService.getAllFiles().map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
-                    .path("/files/")
+                    .path("/api/files/")
                     .path(dbFile.getId())
                     .toUriString();
 
@@ -56,7 +60,7 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-    @GetMapping("/files/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         FileDB fileDB = storageService.getFile(id);
 
