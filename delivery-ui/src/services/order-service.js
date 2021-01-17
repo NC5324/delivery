@@ -24,16 +24,26 @@ class OrderService {
       })
   }
 
-  saveOrder (request) {
+  saveOrder (order) {
     return axios.post(API_URL + '/save',
       {
-        memberId: request.memberId,
-        products: request.products,
-        status: 'accepted'
+        id: order.id,
+        memberId: order.memberId,
+        orderItems: order.orderItems,
+        status: order.status
       },
       {
         headers: authHeader()
       })
+  }
+
+  deleteOrderById (id) {
+    return axios.delete(API_URL + '/delete', {
+      headers: authHeader(),
+      params: {
+        id: id
+      }
+    })
   }
 }
 export default new OrderService()

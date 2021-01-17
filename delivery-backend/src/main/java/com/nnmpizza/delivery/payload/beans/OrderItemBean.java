@@ -1,17 +1,20 @@
 package com.nnmpizza.delivery.payload.beans;
 
+import com.nnmpizza.delivery.models.Member;
+import com.nnmpizza.delivery.models.Product;
+
 public class OrderItemBean {
 
     private Long id;
-    private Long productId;
+    private Product product;
     private Long quantity;
 
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductId(Product product) {
+        this.product = product;
     }
 
     public Long getQuantity() {
