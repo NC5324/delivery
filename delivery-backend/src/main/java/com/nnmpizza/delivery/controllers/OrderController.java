@@ -36,6 +36,7 @@ public class OrderController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'USER')")
     public ResponseEntity<?> saveOrder(@RequestBody OrderRequest orderRequest) {
         //Check if member exists
         var member = memberRepository.findById(orderRequest.getMemberId());
@@ -58,12 +59,12 @@ public class OrderController {
         //Map every JSON OrderItem to Java OrderItem
         Set<OrderItem> orderItems = new HashSet<>();
         for(var jsonOrderItem : jsonOrderItems) {
-            var product = productRepository.findById(jsonOrderItem.getProductId());
+            var product = productRepository.findById(jsonOrderItem.getProduct().getId());
             if(product.isEmpty()){
                 continue;
             }
             var orderItem = orderItemRepository
-                    .findByProductAndQuantity(jsonOrderItem.getProductId(), jsonOrderItem.getQuantity())
+                    .findByProductAndQuantity(jsonOrderItem.getProduct().getId(), jsonOrderItem.getQuantity())
                     .orElse(new OrderItem(jsonOrderItem.getId(), product.get(), jsonOrderItem.getQuantity()));
             orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
@@ -77,5 +78,17 @@ public class OrderController {
 
         //Return a message depending on the operation performed
         return ResponseEntity.ok(isNew ? "Accepted new order." : "Edited existing order.");
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    public ResponseEntity<?> deleteOrderById(@RequestParam Long id){
+        var order = orderRepository.findById(id).get();
+        var member = order.getMember();
+        member.getOrders().remove(order);
+        memberRepository.save(member);
+        orderRepository.deleteById(id);
+
+        return ResponseEntity.ok("Deleted successfully.");
     }
 }

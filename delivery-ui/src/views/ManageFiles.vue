@@ -25,6 +25,7 @@
       v-model="slide"
       controls
       indicators
+      background="gray"
       :interval="0"
       style="text-shadow: 1px 1px 2px #333;"
       @sliding-start="onSlideStart"

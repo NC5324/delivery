@@ -14,7 +14,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private MemberNoAuthDetails member;
 

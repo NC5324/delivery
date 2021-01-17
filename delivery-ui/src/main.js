@@ -20,6 +20,8 @@ import {
   BFormRadio,
   BRow,
   BCol,
+  BFormSelect,
+  BFormFile,
   LayoutPlugin,
   NavbarPlugin,
   TabsPlugin,
@@ -28,6 +30,7 @@ import {
 } from 'bootstrap-vue'
 import ManageFiles from '@/views/ManageFiles'
 
+Vue.component('b-form-file', BFormFile)
 Vue.component('b-form-spinbutton', BFormSpinbutton)
 Vue.component('b-form', BForm)
 Vue.component('b-form-group', BFormGroup)
@@ -43,6 +46,7 @@ Vue.component('b-form-radio-group', BFormRadioGroup)
 Vue.component('b-row', BRow)
 Vue.component('b-col', BCol)
 Vue.component('nc-choose-files', ManageFiles)
+Vue.component('b-form-select', BFormSelect)
 
 Vue.use(NavbarPlugin)
 Vue.use(CarouselPlugin)
