@@ -22,6 +22,7 @@ import {
   BCol,
   BFormSelect,
   BFormFile,
+  BBadge,
   LayoutPlugin,
   NavbarPlugin,
   TabsPlugin,
@@ -47,6 +48,7 @@ Vue.component('b-row', BRow)
 Vue.component('b-col', BCol)
 Vue.component('nc-choose-files', ManageFiles)
 Vue.component('b-form-select', BFormSelect)
+Vue.component('b-badge', BBadge)
 
 Vue.use(NavbarPlugin)
 Vue.use(CarouselPlugin)

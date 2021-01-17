@@ -4,7 +4,7 @@ import { authHeader } from '@/services/auth-header'
 const API_URL = 'http://localhost:8080/api/files'
 
 class UploadFilesService {
-  upload (file, onUploadProgress) {
+  upload (file) {
     const formData = new FormData()
     formData.append('file', file)
     const headers = {
@@ -12,8 +12,7 @@ class UploadFilesService {
       'Content-Type': 'multipart/form-data'
     }
     return axios.post(API_URL + '/upload', formData, {
-      headers,
-      onUploadProgress
+      headers
     })
   }
 
@@ -28,33 +27,13 @@ class UploadFilesService {
       })
   }
 
-  getFilesPage (filters, currentPage, perPage) {
-    return axios.get(API_URL + '/search/page',
-      {
-        params: {
-          type: filters.type == null ? '' : filters.type,
-          currentPage: currentPage,
-          perPage: perPage
-        },
-        headers: {
-          Authorization: authHeader().Authorization,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-  }
-
-  getFilesCount () {
-    const headers = {
-      Authorization: authHeader().Authorization,
-      'Content-Type': 'multipart/form-data'
-    }
-    axios.get(API_URL + '/all',
-      {
-        headers
-      }).then(
-      response => {
-        return response.data.length
-      })
+  deleteFileByName (name) {
+    return axios.delete(API_URL + '/delete', {
+      headers: authHeader(),
+      params: {
+        name: name
+      }
+    })
   }
 }
 export default new UploadFilesService()

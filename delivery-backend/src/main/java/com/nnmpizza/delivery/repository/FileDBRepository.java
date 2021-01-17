@@ -8,10 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface FileDBRepository extends JpaRepository<FileDB, String> {
     @Query("SELECT f FROM FileDB f WHERE " +
             "LOWER(f.type) " +
             "LIKE :#{#type == null || #type.isEmpty()? '%' : '%'+#type+'%'}")
     Page<FileDB> findPageFiles(Pageable pageRequest, String type);
+
+    void deleteByName(String name);
 }
