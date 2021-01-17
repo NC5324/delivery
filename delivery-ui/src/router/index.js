@@ -81,12 +81,34 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/', '/about', '/login', '/register', '/menu']
-  const authRequired = !publicPages.includes(to.path)
-  const loggedIn = localStorage.getItem('user')
-  if (authRequired && !loggedIn) {
+  // const publicPages = ['/', '/about', '/login', '/register', '/menu']
+  const adminPages = ['/manage/products', '/manage/accounts', '/manage/product-options', '/manage/files']
+  const moderatorPages = ['/manage/orders']
+  const userPages = ['/profile']
+
+  const adminAuthRequired = adminPages.includes(to.path)
+  const modAuthRequired = moderatorPages.includes(to.path)
+  const userAuthRequired = userPages.includes(to.path)
+
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  if ((adminAuthRequired || modAuthRequired || userAuthRequired) && !user) {
     return next('/login')
   }
+
+  if (adminAuthRequired && !user.roles.includes('ROLE_ADMIN')) {
+    return next('/')
+  }
+
+  if (modAuthRequired && !user.roles.includes('ROLE_MODERATOR')) {
+    return next('/')
+  }
+
+  // not really needed i think
+  if (userAuthRequired && !user.roles.includes('ROLE_USER')) {
+    return next('/login')
+  }
+
   next()
 })
 
