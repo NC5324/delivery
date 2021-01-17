@@ -14,32 +14,35 @@
     </div>
 
     <label class="btn btn-default">
-      <input type="file" ref="file" @change="selectFile" />
+      <input type="file" ref="file" @change="selectFile"/>
     </label>
 
-    <button class="btn btn-success" :disabled="!selectedFiles" @click="upload">
+    <button class="btn btn-success" @click="upload">
       Upload
     </button>
-
-    <div class="alert alert-light" role="alert">{{ message }}</div>
-
-    <div class="card">
-      <div class="card-header">List of Files</div>
-      <ul class="list-group list-group-flush">
-        <li
-          class="list-group-item"
-          v-for="(file, index) in fileInfos"
-          :key="index"
-        >
-          <table style="min-width: 100%;">
-            <td><strong>Name: {{ file.name }}</strong></td>
-            <td>{{file.url}}<img :src="file.url" alt="img"></td>
-            <td><strong>Type: {{ file.type }}</strong></td>
-            <tr><strong>Size: {{ file.size }}</strong></tr>
-          </table>
-        </li>
-      </ul>
-    </div>
+    <b-carousel
+      id="carousel-1"
+      v-model="slide"
+      controls
+      indicators
+      :interval="0"
+      style="text-shadow: 1px 1px 2px #333;"
+      @sliding-start="onSlideStart"
+      @sliding-end="onSlideEnd"
+    >
+      <!-- Text slides with image -->
+      <b-carousel-slide v-for="index in totalPages" :key="index">
+        <template #img>
+          <b-row>
+            <div style="min-width: 100%">
+              <b-button v-for="(file, index) in fileInfos" :key="index" variant="transparent" @click="changeSelected(file)">
+                <b-img thumbnail fluid :src="file.url" :alt="file.name"></b-img>
+              </b-button>
+            </div>
+          </b-row>
+        </template>
+      </b-carousel-slide>
+    </b-carousel>
   </div>
 </template>
 
@@ -53,16 +56,35 @@ export default {
       currentFile: undefined,
       progress: 0,
       message: '',
-
-      fileInfos: []
+      slide: 0,
+      sliding: null,
+      fileInfos: [],
+      currentPage: 1,
+      perPage: 3,
+      totalItems: 0,
+      totalPages: 5,
+      filters: {}
     }
   },
   mounted () {
-    FileService.getFiles().then(response => {
-      this.fileInfos = response.data
-    })
+    this.searchFiles()
   },
   methods: {
+    searchFiles () {
+      FileService.getFilesPage(this.filters, this.currentPage, this.perPage).then(
+        response => {
+          this.fileInfos = response.data.files
+          this.totalItems = FileService.getFilesCount()
+          this.totalPages = this.totalItems / this.perPage
+        },
+        error => {
+          this.content =
+            (error.response && error.response.data) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
     selectFile () {
       this.selectedFiles = this.$refs.file.files
     },
@@ -87,6 +109,20 @@ export default {
         })
 
       this.selectedFiles = undefined
+    },
+    onSlideStart (slide) {
+      slide = slide + 1
+      this.currentPage = slide
+      this.searchFiles()
+      this.sliding = true
+    },
+    onSlideEnd (slide) {
+      this.sliding = false
+    },
+    changeSelected (item) {
+      if (this.$router.currentRoute.fullPath === '/manage/products') {
+        localStorage.setItem('selectedProductImage', JSON.stringify(item))
+      }
     }
   }
 }

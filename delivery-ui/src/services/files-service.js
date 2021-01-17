@@ -11,7 +11,6 @@ class UploadFilesService {
       Authorization: authHeader().Authorization,
       'Content-Type': 'multipart/form-data'
     }
-    console.log(headers)
     return axios.post(API_URL + '/upload', formData, {
       headers,
       onUploadProgress
@@ -23,10 +22,38 @@ class UploadFilesService {
       Authorization: authHeader().Authorization,
       'Content-Type': 'multipart/form-data'
     }
-    console.log(headers)
     return axios.get(API_URL + '/all',
       {
         headers
+      })
+  }
+
+  getFilesPage (filters, currentPage, perPage) {
+    return axios.get(API_URL + '/search/page',
+      {
+        params: {
+          type: filters.type == null ? '' : filters.type,
+          currentPage: currentPage,
+          perPage: perPage
+        },
+        headers: {
+          Authorization: authHeader().Authorization,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+  }
+
+  getFilesCount () {
+    const headers = {
+      Authorization: authHeader().Authorization,
+      'Content-Type': 'multipart/form-data'
+    }
+    axios.get(API_URL + '/all',
+      {
+        headers
+      }).then(
+      response => {
+        return response.data.length
       })
   }
 }
