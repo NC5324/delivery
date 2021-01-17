@@ -22,30 +22,29 @@
         </b-form-group>
       </b-form>
       <b-card-group>
-        <div v-for="(product, index) in products" :key="product">
-          <b-card
-            :title="product.name"
-            style="min-width: 22rem ;max-width: 22rem; min-height: 36rem;"
-            class="mb-2 mr-2 ml-2 mt-2"
-          >
-            <template #header>
-              <b-card-img :src="product.imgSource ? product.imgSource : 'http://www.dominos.bg/gallery/fmobile/1266medium.png'" alt="image" top>
-              </b-card-img>
-            </template>
-            <template #default>
-              <b-card-text style="text-align: left">
-                <strong>Топинги: </strong>
-                <div v-for="topping in product.toppings" :key="topping">
-                  {{topping.name}}
-                </div>
-              </b-card-text>
-            </template>
-            <template #footer>
-              <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
-              <b-button @click="addToCart(product.id, index)" style="margin-left: 1rem; margin-bottom: 3px;" size="sm" variant="success">Добави в количката</b-button>
-            </template>
-          </b-card>
-        </div>
+        <b-card
+          v-for="(product, index) in products" :key="product"
+          :title="product.name"
+          style="min-width: 22rem ;max-width: 22rem; min-height: 36rem;"
+          class="mb-2 mr-2 ml-2 mt-2"
+        >
+          <template #header>
+            <b-card-img :src="product.imgSource ? product.imgSource : 'http://www.dominos.bg/gallery/fmobile/1266medium.png'" alt="image" top>
+            </b-card-img>
+          </template>
+          <template #default>
+            <b-card-text style="text-align: left">
+              <strong>Топинги: </strong>
+              <div v-for="topping in product.toppings" :key="topping">
+                {{topping.name}}
+              </div>
+            </b-card-text>
+          </template>
+          <template #footer>
+            <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
+            <b-button @click="addToCart(product.id, index)" style="margin-left: 1rem; margin-bottom: 3px;" size="sm" variant="success">Добави в количката</b-button>
+          </template>
+        </b-card>
       </b-card-group>
       <b-pagination
         pills

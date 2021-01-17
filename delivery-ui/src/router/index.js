@@ -10,6 +10,7 @@ import ManageProducts from '@/views/ManageProducts'
 import ManageAccounts from '@/views/ManageAccounts'
 import ManageOrders from '@/views/ManageOrders'
 import ManageToppings from '@/views/ManageToppings'
+import ManageFiles from '@/views/ManageFiles'
 Vue.use(VueRouter)
 
 const routes = [
@@ -62,6 +63,11 @@ const routes = [
     path: '/manage/product-options',
     name: 'ManageTopping',
     component: ManageToppings
+  },
+  {
+    path: '/manage/files',
+    name: 'ManageFiles',
+    component: ManageFiles
   },
   {
     path: '*',

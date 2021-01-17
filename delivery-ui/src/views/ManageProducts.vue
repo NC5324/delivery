@@ -28,6 +28,9 @@
           {{topping.name + (index &lt; (row.item.newToppings.length - 1) ? ', ' : '')}}
         </div>
       </template>
+      <template #cell(imgSource)="row">
+        <b-img thumbnail fluid :src="row.item.imgSource" width="150rem" height="150rem" :alt="row.item.name"></b-img>
+      </template>
       <template #cell(actions)="row">
         <b-button @click="row.toggleDetails" style="min-width: 7rem" class="mr-2">
           {{(row.detailsShowing ? 'Скрий' : 'Покажи')}}
@@ -46,6 +49,21 @@
                : (filters.type === 'pizza' ? 'http://www.dominos.bg/gallery/fmobile/1266medium.png'
                : 'https://iconarchive.com/download/i109888/lemon-liu/recipes/recipe-dessert-cake.ico')" alt="image" top >
               </b-card-img>
+              <b-button v-b-modal.selectImage>
+                <b-icon-pencil></b-icon-pencil>
+                Редактирай
+              </b-button>
+              <b-modal id="selectImage" title="Избор на снимка" size="lg">
+                <nc-choose-files></nc-choose-files>
+                <template #modal-footer = "{ ok, cancel }">
+                  <b-button variant="success" @click="saveImage(row.item); ok;">
+                    Запази
+                  </b-button>
+                  <b-button variant="danger" @click="resetImageSelection(); cancel;">
+                    Откажи
+                  </b-button>
+                </template>
+              </b-modal>
             </template>
             <template #default>
               <b-card-text style="text-align: left">
@@ -86,7 +104,7 @@
             </b-form>
             <template #footer>
               <b-button-group>
-                <b-button class="m-2 text-light" @click="saveProduct(row.item, false)" variant="success">Запази промените</b-button>
+                <b-button class="m-2 text-light" @click="saveProduct(row.item, false, row)" variant="success">Запази промените</b-button>
                 <b-button class="m-2 text-light" @click="deleteProduct(row.item.id)" variant="danger">Премахни от базата данни</b-button>
               </b-button-group>
             </template>
@@ -189,6 +207,7 @@ export default {
         { key: 'id', label: 'ID' },
         { key: 'name', label: 'Име' },
         { key: 'type', label: 'Категория' },
+        { key: 'imgSource', label: 'Снимка' },
         { key: 'toppings', label: 'Съдържа' },
         { key: 'actions', label: 'Действия' }
       ],
@@ -265,10 +284,13 @@ export default {
         target.push(new Product(p.id, p.name, p.price, p.type, p.imgSource, p.toppings, p.toppings))
       }
     },
-    saveProduct (product, newFlag) {
+    saveProduct (product, newFlag, row) {
       ProductService.saveProduct(product, newFlag).then(
         () => {
-          this.$router.go()
+          row.toggleDetails()
+          if (newFlag) {
+            this.$router.go()
+          }
         },
         error => {
           this.content =
@@ -277,6 +299,15 @@ export default {
             error.toString()
         }
       )
+    },
+    saveImage (product) {
+      const selectedImage = JSON.parse(localStorage.getItem('selectedProductImage'))
+      if (selectedImage) {
+        product.imgSource = selectedImage.url
+      }
+    },
+    resetImageSelection () {
+      localStorage.removeItem('selectedProductImage')
     },
     deleteProduct (id) {
       ProductService.deleteProductById(id).then(

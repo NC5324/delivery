@@ -18,12 +18,15 @@ import {
   BFormCheckboxGroup,
   BFormRadioGroup,
   BFormRadio,
+  BRow,
+  BCol,
   LayoutPlugin,
   NavbarPlugin,
   TabsPlugin,
   ModalPlugin,
-  CarouselPlugin, TablePlugin, PaginationPlugin, CardPlugin, SidebarPlugin, AvatarPlugin, BootstrapVueIcons, JumbotronPlugin
+  CarouselPlugin, TablePlugin, PaginationPlugin, CardPlugin, SidebarPlugin, AvatarPlugin, BootstrapVueIcons, JumbotronPlugin, ImagePlugin
 } from 'bootstrap-vue'
+import ManageFiles from '@/views/ManageFiles'
 
 Vue.component('b-form-spinbutton', BFormSpinbutton)
 Vue.component('b-form', BForm)
@@ -37,6 +40,9 @@ Vue.component('b-form-checkbox-group', BFormCheckboxGroup)
 Vue.component('b-form-checkbox', BFormCheckbox)
 Vue.component('b-form-radio', BFormRadio)
 Vue.component('b-form-radio-group', BFormRadioGroup)
+Vue.component('b-row', BRow)
+Vue.component('b-col', BCol)
+Vue.component('nc-choose-files', ManageFiles)
 
 Vue.use(NavbarPlugin)
 Vue.use(CarouselPlugin)
@@ -50,6 +56,7 @@ Vue.use(AvatarPlugin)
 Vue.use(BootstrapVueIcons)
 Vue.use(ModalPlugin)
 Vue.use(JumbotronPlugin)
+Vue.use(ImagePlugin)
 
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
