@@ -5,6 +5,7 @@ import com.nnmpizza.delivery.models.Role;
 import java.util.List;
 
 public class JwtResponse {
+    private String password;
     private String token;
     private String type = "Bearer";
     private Long id;
@@ -23,15 +24,24 @@ public class JwtResponse {
         this.roles = roles;
     }
 
-    public JwtResponse(String token, Long id, String username, String email, List<String> roles, String phoneNumber, String firstName, String lastName) {
+    public JwtResponse(String token, Long id, String username, String password, String email, List<String> roles, String phoneNumber, String firstName, String lastName) {
         this.token = token;
         this.id = id;
+        this.password = password;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhoneNumber() {

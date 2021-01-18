@@ -4,6 +4,7 @@ import com.nnmpizza.delivery.models.MemberNoAuthDetails;
 import com.nnmpizza.delivery.models.Order;
 import com.nnmpizza.delivery.models.OrderItem;
 import com.nnmpizza.delivery.payload.beans.OrderItemBean;
+import com.nnmpizza.delivery.payload.beans.OrderItemPojo;
 import com.nnmpizza.delivery.payload.request.OrderRequest;
 import com.nnmpizza.delivery.repository.*;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,7 @@ public class OrderController {
         Order order = new Order(orderRequest.getId(), member.get(), orderRequest.getStatus());
 
         //If order has empty array of OrderItems return a bad request
-        Set<OrderItemBean> jsonOrderItems = orderRequest.getOrderItems();
+        Set<OrderItemPojo> jsonOrderItems = orderRequest.getOrderItems();
         if(jsonOrderItems.size() <= 0){
             return ResponseEntity.badRequest().body("Order is empty!");
         }
@@ -59,12 +60,12 @@ public class OrderController {
         //Map every JSON OrderItem to Java OrderItem
         Set<OrderItem> orderItems = new HashSet<>();
         for(var jsonOrderItem : jsonOrderItems) {
-            var product = productRepository.findById(jsonOrderItem.getProduct().getId());
+            var product = productRepository.findById(jsonOrderItem.getProductId());
             if(product.isEmpty()){
                 continue;
             }
             var orderItem = orderItemRepository
-                    .findByProductAndQuantity(jsonOrderItem.getProduct().getId(), jsonOrderItem.getQuantity())
+                    .findByProductAndQuantity(jsonOrderItem.getProductId(), jsonOrderItem.getQuantity())
                     .orElse(new OrderItem(jsonOrderItem.getId(), product.get(), jsonOrderItem.getQuantity()));
             orderItemRepository.save(orderItem);
             orderItems.add(orderItem);

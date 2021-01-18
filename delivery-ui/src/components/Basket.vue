@@ -16,8 +16,10 @@
             </b-card-text>
           </template>
           <template #footer>
-            <strong>Цена: {{getProductById(orderItem.productId).price}} лв.</strong>
-            <b-button variant="danger" @click="removeFromCart(orderItem.productId)" style="width: 100%; margin-top: 0.5rem"><b-icon-x-circle></b-icon-x-circle> Премахни </b-button>
+            <b-button style="width: 100%;" class="m-2">Количество: {{orderItem.quantity}}</b-button>
+            <b-button style="width: 100%;" class="m-2">Цена на 1: {{getProductById(orderItem.productId).price}} лв.</b-button>
+            <b-button style="width: 100%;" class="m-2">Цена: {{getProductById(orderItem.productId).price * orderItem.quantity}} лв.</b-button>
+            <b-button style="width: 100%;" class="m-2" variant="danger" @click="removeFromCart(orderItem.productId)"><b-icon-x-circle></b-icon-x-circle> Премахни </b-button>
           </template>
         </b-card>
       </div>
@@ -128,6 +130,8 @@ export default {
       console.log(order)
       OrderService.saveOrder(order).then(
         (response) => {
+          localStorage.removeItem('basket')
+          this.$root.$emit('bv::toggle::collapse', 'sidebar-basket')
           this.showModal(response.data)
         },
         error => {
