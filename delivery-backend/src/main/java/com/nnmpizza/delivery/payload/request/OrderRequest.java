@@ -1,16 +1,14 @@
 package com.nnmpizza.delivery.payload.request;
 
 import com.nnmpizza.delivery.payload.beans.OrderItemBean;
-import com.nnmpizza.delivery.payload.beans.ProductQuantity;
+import com.nnmpizza.delivery.payload.beans.OrderItemPojo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class OrderRequest {
     private Long id;
     private Long memberId;
-    private Set<OrderItemBean> orderItems;
+    private Set<OrderItemPojo> orderItems;
     private String status;
 
     public Long getId() {
@@ -21,11 +19,11 @@ public class OrderRequest {
         this.id = id;
     }
 
-    public Set<OrderItemBean> getOrderItems() {
+    public Set<OrderItemPojo> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(Set<OrderItemBean> orderItems) {
+    public void setOrderItems(Set<OrderItemPojo> orderItems) {
         this.orderItems = orderItems;
     }
 

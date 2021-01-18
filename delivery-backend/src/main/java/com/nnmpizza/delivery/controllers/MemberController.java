@@ -37,7 +37,7 @@ public class MemberController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')")
     public ResponseEntity<?> saveMember (@Valid @RequestBody MemberRequest memberRequest) {
         boolean isNew = memberRequest.getId() == null;
 
@@ -46,7 +46,7 @@ public class MemberController {
         Set<RoleBean> jsonRoles = memberRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
-        if (jsonRoles.size() == 0) {
+        if (memberRequest.getRoles() == null || jsonRoles.size() == 0) {
             Role userRole = roleRepository.findByName("ROLE_USER")
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);

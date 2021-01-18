@@ -1,100 +1,56 @@
 <template>
   <div style="color: green;" class="container top">
-    <header class="jumbotron">
-      <h3>
-        <strong>{{currentUser.username + '\'s'}}</strong> Profile
-      </h3>
-      <b-button @click="handleLogout" variant="danger">Logout</b-button>
-      <b-button style="margin-left: 10px" @click="saveOrder" variant="success">Send order</b-button>
-      <b-button @click="clearCart" style="margin-left: 10px" variant="dark">Clear cart</b-button>
-      <p style="margin-top: 20px;">
-        <strong>Token:</strong>
-        {{currentUser.accessToken.substring(0, 20)}} ... {{currentUser.accessToken.substr(currentUser.accessToken.length - 20)}}
-      </p>
-      <p>
-        <strong>Id:</strong>
-        {{currentUser.id}}
-      </p>
-      <p>
-        <strong>Email:</strong>
-        {{currentUser.email}}
-      </p>
-      <strong>Authorities:</strong>
-      <ul>
-        <li v-for="(role,index) in currentUser.roles" :key="index">{{role}}</li>
-      </ul>
-      <strong>Количка:</strong>
-      <ul>
-        <li v-for="(product,index) in shoppingCart" :key="index"><strong style="horiz-align: center">{{product}}</strong></li>
-      </ul>
-      <b-card>
+      <b-card id="editNew" class="mb-2 mr-2 ml-2 mt-2">
         <b-form>
-
-          <b-form-group id="input-group-1" label="Потребителско име:" label-for="input-1">
-            <b-form-input id="input-1"
-                          v-model="currentUser.username"
-                          type="text"
-                          disabled
-            ></b-form-input>
+          <b-form-group id="input-group-1" label="Име : " label-align="left" label-for="input-1">
+            <b-form-input size="md" id="input-1" v-model="blankMember.firstName" type="text"></b-form-input>
           </b-form-group>
-
-          <b-form-group id="input-group-3" label="E-mail адрес:" label-for="input-3">
-            <b-form-input
-              id="input-3"
-              v-model="currentUser.email"
-              disabled
-            ></b-form-input>
+          <b-form-group id="input-group-2" label="Фамилия: " label-align="left" label-for="input-2">
+            <b-form-input size="md" id="input-2" v-model="blankMember.lastName" type="text"></b-form-input>
           </b-form-group>
-
-          <b-form-group id="input-group-2" label="Текуща парола:" label-for="input-2">
-            <b-form-input
-              id="input-2"
-              v-model="currentUser.password"
-              type="password"
-              :required="madeChanges"
-            ></b-form-input>
+          <b-form-group id="input-group-6" label="Потребителско име: " label-align="left" label-for="input-6">
+            <b-form-input size="md" id="input-6" v-model="blankMember.username" type="text"></b-form-input>
           </b-form-group>
-
-          <b-form-group id="input-group-2" label="Нова парола:" label-for="input-2">
-            <b-form-input
-              id="input-2"
-              v-model="this.newPassword"
-              type="password"
-              placeholder="Въведете нова парола"
-              required
-            ></b-form-input>
+          <b-form-group id="input-group-5" label="E-mail адрес: " label-align="left" label-for="input-4">
+            <b-form-input size="md" id="input-5" v-model="blankMember.email" type="text"></b-form-input>
           </b-form-group>
-
-          <b-button @click="editProfile" variant="primary">Запази промените</b-button>
+          <b-form-group id="input-group-5" label="Телефон: " label-align="left" label-for="input-5">
+            <b-form-input size="md" id="input-5" v-model="blankMember.phoneNumber" type="text"></b-form-input>
+          </b-form-group>
         </b-form>
+        <template #footer>
+          <b-button-group>
+            <b-button class="m-2 text-light" @click="editProfile(blankMember)" variant="success">Запази промените</b-button>
+          </b-button-group>
+        </template>
       </b-card>
-      <h5>{{madeChanges}}</h5>
-    </header>
     <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png">
   </div>
 </template>
 
 <script>
-import OrderService from '../services/order-service'
+import Member from '@/models/member'
+import MemberService from '@/services/member-service'
 export default {
   name: 'Profile',
-  newPassword: null,
+  data () {
+    return {
+      blankMember: new Member(this.$store.state.auth.user.id, this.$store.state.auth.user.username, this.$store.state.auth.user.password, this.$store.state.auth.user.email, this.$store.state.auth.user.phoneNumber, this.$store.state.auth.user.firstName, this.$store.state.auth.user.lastName)
+    }
+  },
+  mounted () {
+    this.resetBlankMember()
+  },
   computed: {
     currentUser () {
       return this.$store.state.auth.user
-    },
-    shoppingCart () {
-      return JSON.parse(localStorage.getItem('basket'))
-    },
-    madeChanges () {
-      return this.newPassword !== null
     }
   },
   methods: {
     handleLogout () {
       this.$store.dispatch('auth/logout').then(
         () => {
-          this.$router.push('/')
+          this.$router.push('/login')
           this.$router.go()
         },
         error => {
@@ -105,33 +61,34 @@ export default {
         }
       )
     },
-    clearCart () {
-      localStorage.removeItem('basket')
-      this.$router.go()
-    },
-    saveOrder () {
-      const request = {
-        memberId: this.currentUser.id,
-        products: JSON.parse(localStorage.getItem('basket')),
-        status: 'accepted'
-      }
-      OrderService.saveOrder(request).then(
-        () => {
-          console.log('order registered successfully')
-          localStorage.removeItem('basket')
-          this.$router.go()
+    editProfile (member) {
+      MemberService.saveMember(member).then(
+        response => {
+          this.showModal(response.data.message)
+          this.handleLogout()
         },
         error => {
-          console.log('failed to register order')
-          this.message =
+          this.content =
             (error.response && error.response.data) ||
             error.message ||
             error.toString()
         }
       )
     },
-    editProfile () {
-
+    showModal (message) {
+      this.successBox = ''
+      this.$bvModal.msgBoxOk(message, {
+        title: 'Съобщение',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'success',
+        headerClass: 'p-2 border-bottom-0',
+        footerClass: 'p-2 border-top-0',
+        centered: true
+      })
+    },
+    resetBlankMember () {
+      this.blankMember = new Member(this.$store.state.auth.user.id, this.$store.state.auth.user.username, this.$store.state.auth.user.password, this.$store.state.auth.user.email, this.$store.state.auth.user.phoneNumber, this.$store.state.auth.user.firstName, this.$store.state.auth.user.lastName)
     }
   }
 }

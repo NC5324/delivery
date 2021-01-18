@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://cdn.hipwallpaper.com/i/3/15/dqIeNr.jpg); background-repeat: no-repeat; background-size: 100% 100%" id="app">
-    <b-navbar sticky toggleable="xl" variant="white">
+    <b-navbar sticky toggleable="xl" :variant="nav_bg_variant">
       <b-navbar-brand  href="/">
         <img width="200px" height="60px" src="https://www.pngkey.com/png/full/490-4902011_new-york-pizza-logo-png-transparent-new-york.png" alt="brandLogo">
       </b-navbar-brand>
@@ -95,45 +95,10 @@ export default {
         this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
       }
     },
-    calculatePrice () {
-      this.totalPrice = 0
-      for (let i = 0; i < this.products.length; i++) {
-        this.totalPrice += this.products[i].price
-      }
-    },
-    removeFromCart (id) {
-      let indexOfResult
-      let result = this.products.filter(obj => {
-        indexOfResult = this.products.indexOf(obj)
-        return obj.id === id
-      })
-      if (result) {
-        this.products.splice(indexOfResult, 1)
-      }
-      const items = JSON.parse(localStorage.getItem('basket'))
-      result = null
-      result = items.filter(obj => {
-        indexOfResult = items.indexOf(obj)
-        return obj.productId === id
-      })
-      console.log(result)
-      if (result) {
-        items.splice(indexOfResult, 1)
-        localStorage.setItem('basket', JSON.stringify(items))
-      }
-      this.onBasketShow()
-    },
     logOut () {
       this.$store.dispatch('auth/logout')
       this.$router.push('/')
       this.$router.go()
-    },
-    loadBasket () {
-      const jsonBasket = JSON.parse(localStorage.getItem('basket'))
-      this.basket = jsonBasket
-    },
-    saveBasket () {
-      localStorage.setItem('basket', JSON.stringify(this.basket))
     }
 
   }
