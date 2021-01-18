@@ -64,17 +64,15 @@ public class ProductController {
 
     @GetMapping("/search/id")
     public ResponseEntity<?> getProductById(@RequestParam Long id) {
-        Optional<Product> result = ProductRepository.findById(id);
+        var result = ProductRepository.findById(id).get();
+        Map<String, Object> response = new HashMap<>();
+        response.put("name", result.getName());
+        response.put("price", result.getId());
+        response.put("imgSource", result.getImgSource());
+        response.put("toppings", result.getToppings());
+        response.put("type", result.getType());
 
-        if(result.isPresent()) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("product", result.get());
-            response.put("id", result.get().getId());
-            response.put("name", result.get().getName());
-            return ResponseEntity.ok(response);
-        }else{
-            return ResponseEntity.ok("Product not found");
-        }
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/search/page")

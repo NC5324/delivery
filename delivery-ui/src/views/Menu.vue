@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <div id="header" style="min-height: 20px"></div>
-    <b-container style="background-image: url(https://images.unsplash.com/photo-1524365521362-0a59611ecbf1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80)" class="center-screen">
+    <b-container @click="hideBasket" style="background-image: url(https://images.unsplash.com/photo-1524365521362-0a59611ecbf1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80)" class="center-screen">
       <b-form id="category and stuff">
         <b-form-group
           v-slot="{ ariaDescribedby }"
@@ -23,7 +23,7 @@
       </b-form>
       <b-card-group>
         <b-card
-          v-for="(product, index) in products" :key="product"
+          v-for="(product, index) in products" :key="index"
           :title="product.name"
           style="min-width: 22rem ;max-width: 22rem; min-height: 36rem;"
           class="mb-2 mr-2 ml-2 mt-2"
@@ -35,13 +35,13 @@
           <template #default>
             <b-card-text style="text-align: left">
               <strong>Топинги: </strong>
-              <div v-for="topping in product.toppings" :key="topping">
+              <div v-for="(topping, index) in product.toppings" :key="index">
                 {{topping.name}}
               </div>
             </b-card-text>
           </template>
           <template #footer>
-            <b-form-spinbutton @change="setQuantity(index)" v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
+            <b-form-spinbutton v-model="quantity[index]" inline size="sm" ></b-form-spinbutton>
             <b-button @click="addToCart(product.id, index)" style="margin-left: 1rem; margin-bottom: 3px;" size="sm" variant="success">Добави в количката</b-button>
           </template>
         </b-card>
@@ -68,6 +68,7 @@
 <script>
 import ProductService from '../services/product-service'
 import OrderItem from '../models/orderItem'
+import Order from '@/models/order'
 export default {
   name: 'Menu',
   data () {
@@ -99,6 +100,12 @@ export default {
       this.quantity.push(1)
     }
   },
+  created () {
+    const basket = JSON.parse(localStorage.getItem('basket'))
+    if (!basket) {
+      this.initBasket()
+    }
+  },
   methods: {
     searchProducts () {
       console.log(this.filters)
@@ -116,16 +123,41 @@ export default {
         }
       )
     },
-    addToCart (id, index) {
-      let items = JSON.parse(localStorage.getItem('basket'))
-      if (!items) {
-        items = []
+    addToCart (productId, quantityIndex) {
+      const basket = JSON.parse(localStorage.getItem('basket'))
+      const newOrderItem = new OrderItem(productId, this.quantity[quantityIndex])
+      let isNew = true
+      for (let i = 0; i < basket.orderItems.length; i++) {
+        const orderItem = basket.orderItems[i]
+        if (orderItem.productId === newOrderItem.productId) {
+          basket.orderItems[i] = newOrderItem
+          isNew = false
+        }
       }
-      items.push(new OrderItem(id, this.quantity[index]))
-      localStorage.setItem('basket', JSON.stringify(items))
+      if (isNew) {
+        basket.orderItems.push(newOrderItem)
+      }
+      localStorage.setItem('basket', JSON.stringify(basket))
     },
-    setQuantity (index) {
-      this.quantity[index]++
+    initBasket () {
+      const basket = new Order()
+      const user = JSON.parse(localStorage.getItem('user'))
+      if (user) {
+        basket.memberId = user.id
+        basket.firstName = user.firstName
+        basket.lastName = user.lastName
+        basket.email = user.email
+        basket.phoneNumber = user.phoneNumber
+      }
+      basket.orderItems = []
+      localStorage.setItem('basket', JSON.stringify(basket))
+      console.log('basket initialised successfully')
+    },
+    hideBasket () {
+      const pog = localStorage.getItem('pog')
+      if (pog) {
+        this.$root.$emit('bv::toggle::collapse', 'sidebar-basket')
+      }
     }
   }
 }

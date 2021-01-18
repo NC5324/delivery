@@ -27,12 +27,12 @@
         <!--Right aligned nav items-->
       <b-collapse id="nav-collapse2" is-nav>
         <b-navbar-nav class="ml-auto" v-if="!currentUser">
-          <b-nav-item right v-b-toggle.sidebar-right><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
+          <b-nav-item right v-b-toggle.sidebar-basket><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
           <b-nav-item right href="/login"><b-button variant="dark"><b-icon-door-closed></b-icon-door-closed> Вход </b-button></b-nav-item>
           <b-nav-item right href="/register"><b-button variant="dark"><b-icon-key></b-icon-key> Регистрация </b-button></b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-if="currentUser">
-          <b-nav-item right v-b-toggle.sidebar-right><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
+          <b-nav-item right v-b-toggle.sidebar-basket><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
           <b-nav-item right href="/profile"><b-button variant="dark"><b-icon-person></b-icon-person>Профил</b-button></b-nav-item>
           <b-nav-item right><b-button @click="logOut" variant="dark"><b-icon-door-open></b-icon-door-open>Изход</b-button></b-nav-item>
         </b-navbar-nav>
@@ -41,44 +41,19 @@
     <div>
       <router-view/>
     </div>
-    <b-sidebar v-if="false" @shown="onBasketShow" @hidden="onBasketHide"  id="sidebar-right" title="Количка" right bg-variant="dark" text-variant="light">
-      <template #footer="{ hide }">
-        <div class="d-flex bg-dark text-light align-items-center px-3 py-2">
-          <strong class="mr-auto">Обща цена: {{totalPrice}} лв.</strong>
-          <b-button size="sm" @click="hide">Close</b-button>
-        </div>
-      </template>
-      <div v-if="!initial">
-        <b-card-group v-for="item in products" :key="item" class="px-3 py-2">
-          <b-card bg-variant="white" text-variant="dark" :header="item.name" class="text-center mt-3">
-            <b-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. {{item.toppings}}</b-card-text>
-            <template #footer>
-              <strong class="mr-auto">Цена: {{item.price}} лв.</strong>
-              <b-avatar button @click="removeFromCart(item.id)" class="ml-5" icon="x-circle"></b-avatar>
-            </template>
-          </b-card>
-        </b-card-group>
-      </div>
-      <div v-else>
-        <strong class="mr-auto">Количката е празна!</strong>
-      </div>
-    </b-sidebar>
+    <Basket></Basket>
   </div>
 </template>
 
 <script>
-import ProductService from './services/product-service'
+import Order from '@/models/order'
+import Basket from '@/components/Basket'
 export default {
+  components: { Basket },
   data () {
     return {
       nav_bg_variant: 'white',
-      products: [{
-        id: '',
-        name: '',
-        price: 0,
-        imgSource: '',
-        type: ''
-      }],
+      basket: new Order(),
       totalPrice: 0,
       show: false,
       initial: true
@@ -99,19 +74,16 @@ export default {
       if (this.currentUser && this.currentUser.roles) {
         return this.currentUser.roles.includes('ROLE_ADMIN')
       }
-
       return false
     },
     showModeratorBoards () {
       if (this.currentUser && this.currentUser.roles) {
         return this.currentUser.roles.includes('ROLE_MODERATOR')
       }
-
       return false
     }
   },
   created () {
-    this.onBasketShow()
     window.addEventListener('scroll', this.handleScroll)
     this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
   },
@@ -122,29 +94,6 @@ export default {
       } else {
         this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
       }
-    },
-    onBasketShow () {
-      if (localStorage.getItem('basket')) {
-        this.initial = false
-        const items = JSON.parse(localStorage.getItem('basket'))
-        for (let i = 0; i < items.length; i++) {
-          ProductService.getProductById(items[i].productId).then(
-            response => {
-              if (!this.products[i]) {
-                this.products.push(response.data.product)
-              }
-            },
-            error => {
-              this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString()
-            })
-        }
-      }
-      this.calculatePrice()
-    },
-    onBasketHide () {
     },
     calculatePrice () {
       this.totalPrice = 0
@@ -178,7 +127,15 @@ export default {
       this.$store.dispatch('auth/logout')
       this.$router.push('/')
       this.$router.go()
+    },
+    loadBasket () {
+      const jsonBasket = JSON.parse(localStorage.getItem('basket'))
+      this.basket = jsonBasket
+    },
+    saveBasket () {
+      localStorage.setItem('basket', JSON.stringify(this.basket))
     }
+
   }
 }
 </script>
