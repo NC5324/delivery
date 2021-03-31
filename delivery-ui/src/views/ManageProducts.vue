@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 5% 10%;">
     <b-form id="category and stuff">
       <div id="header" style="min-height: 20px"></div>
       <b-form-group

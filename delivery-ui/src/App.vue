@@ -4,15 +4,13 @@
       <b-navbar-nav class="navbar-left" style="margin-left: 10%">
         <b-nav-item href="/"><span class="nav-item1">Home</span></b-nav-item>
         <b-nav-item href="/menu"><span class="nav-item1">Menu</span></b-nav-item>
-        <div v-if="false">
-          <b-nav-item href="/manage/orders" right v-if="showModeratorBoards">Управление на поръчки</b-nav-item>
-          <b-nav-item href="/manage/products" right v-if="showAdminBoards">Управление на продукти</b-nav-item>
-          <b-nav-item href="/manage/accounts" right v-if="showAdminBoards">Управление на акаунти</b-nav-item>
-          <b-nav-item href="/manage/files" right v-if="showAdminBoards">Управление на файлове</b-nav-item>
-        </div>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto navbar-right">
+        <b-nav-item href="/manage/products" v-if="showAdminBoards"><span class="nav-item1">Manage Products</span></b-nav-item>
+        <b-nav-item href="/manage/accounts" v-if="showAdminBoards"><span class="nav-item1">Manage Profiles</span></b-nav-item>
+        <b-nav-item href="/manage/files" v-if="showAdminBoards"><span class="nav-item1">Manage Files</span></b-nav-item>
+        <b-nav-item href="/manage/orders" v-if="showModeratorBoards"><span class="nav-item1">Manage Orders</span></b-nav-item>
         <div v-b-toggle.sidebar-basket class="nav-item1" style="display: flex; flex-direction: column; justify-content: space-around">
           <img src="@/assets/basket.svg" alt="Basket" width="30px" height="30px">
         </div>
@@ -80,6 +78,9 @@ export default {
     },
     redirect (target) {
       this.$router.push(target)
+    },
+    wideEnough () {
+      return window.innerWidth > 900
     }
   }
 }

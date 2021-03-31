@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 5% 10%;">
     <b-table style="text-align: left" stacked="lg" striped hover :items="orders" :fields="fields">
       <template #cell(orderItems)="orderItemRow">
         <table style="width: 100%;">
