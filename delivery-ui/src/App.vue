@@ -1,42 +1,30 @@
 <template>
-  <div style="min-height: 100vh; min-width: 100vw; background-image: url(https://cdn.hipwallpaper.com/i/3/15/dqIeNr.jpg); background-repeat: no-repeat; background-size: 100% 100%" id="app">
-    <b-navbar sticky toggleable="xl" :variant="nav_bg_variant">
-      <b-navbar-brand  href="/">
-        <img width="200px" height="60px" src="https://www.pngkey.com/png/full/490-4902011_new-york-pizza-logo-png-transparent-new-york.png" alt="brandLogo">
-      </b-navbar-brand>
+  <div id="app">
+    <b-navbar fixed="top" class="navbar">
+      <b-navbar-nav class="navbar-left" style="margin-left: 10%">
+        <b-nav-item href="/"><span class="nav-item1">Home</span></b-nav-item>
+        <b-nav-item href="/menu"><span class="nav-item1">Menu</span></b-nav-item>
+        <div v-if="false">
+          <b-nav-item href="/manage/orders" right v-if="showModeratorBoards">Управление на поръчки</b-nav-item>
+          <b-nav-item href="/manage/products" right v-if="showAdminBoards">Управление на продукти</b-nav-item>
+          <b-nav-item href="/manage/accounts" right v-if="showAdminBoards">Управление на акаунти</b-nav-item>
+          <b-nav-item href="/manage/files" right v-if="showAdminBoards">Управление на файлове</b-nav-item>
+        </div>
+      </b-navbar-nav>
 
-      <b-navbar-toggle target="nav-collapse">
-      </b-navbar-toggle>
-
-      <b-collapse class="ml-auto" id="nav-collapse" is-nav>
-        <!--Left aligned nav items-->
-        <b-navbar-nav>
-          <b-nav-item href="/"><b-button variant="dark">Начало</b-button></b-nav-item>
-          <b-nav-item href="/about"><b-button variant="dark">За нас</b-button></b-nav-item>
-          <b-nav-item href="/menu"><b-button variant="dark">Меню</b-button> </b-nav-item>
-          <b-nav-item href="/manage/orders" right v-if="showModeratorBoards"><b-button variant="dark">Управление на поръчки</b-button></b-nav-item>
-          <b-nav-item href="/manage/products" right v-if="showAdminBoards"><b-button variant="dark">Управление на продукти</b-button></b-nav-item>
-          <b-nav-item href="/manage/accounts" right v-if="showAdminBoards"><b-button variant="dark">Управление на акаунти</b-button></b-nav-item>
-          <b-nav-item href="/manage/files" right v-if="showAdminBoards"><b-button variant="dark">Управление на файлове</b-button></b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-
-      <b-navbar-toggle class="ml-auto" target="nav-collapse2" is-nav>
-      </b-navbar-toggle>
-
-        <!--Right aligned nav items-->
-      <b-collapse id="nav-collapse2" is-nav>
-        <b-navbar-nav class="ml-auto" v-if="!currentUser">
-          <b-nav-item right v-b-toggle.sidebar-basket><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
-          <b-nav-item right href="/login"><b-button variant="dark"><b-icon-door-closed></b-icon-door-closed> Вход </b-button></b-nav-item>
-          <b-nav-item right href="/register"><b-button variant="dark"><b-icon-key></b-icon-key> Регистрация </b-button></b-nav-item>
-        </b-navbar-nav>
-        <b-navbar-nav class="ml-auto" v-if="currentUser">
-          <b-nav-item right v-b-toggle.sidebar-basket><b-button variant="dark"><b-icon-basket2></b-icon-basket2> Количка </b-button></b-nav-item>
-          <b-nav-item right href="/profile"><b-button variant="dark"><b-icon-person></b-icon-person>Профил</b-button></b-nav-item>
-          <b-nav-item right><b-button @click="logOut" variant="dark"><b-icon-door-open></b-icon-door-open>Изход</b-button></b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
+      <b-navbar-nav class="ml-auto navbar-right" v-if="!currentUser">
+        <div v-b-toggle.sidebar-basket class="nav-item1" style="display: flex; flex-direction: column; justify-content: space-around">
+          <img src="@/assets/basket.svg" alt="Basket" width="30px" height="30px">
+        </div>
+        <div v-on:click="redirect('/login')" class="nav-item1" style="margin-left: 10px; display: flex; flex-direction: column; justify-content: space-around; cursor: pointer;">
+          <img src="@/assets/profile.svg" alt="Profile" width="30px" height="30px">
+        </div>
+      </b-navbar-nav>
+      <b-navbar-nav class="ml-auto" v-if="currentUser">
+        <b-nav-item right v-b-toggle.sidebar-basket><b-icon-basket2></b-icon-basket2></b-nav-item>
+        <b-nav-item right href="/profile"><b-button variant="dark"><b-icon-person></b-icon-person>Профил</b-button></b-nav-item>
+        <b-nav-item right><b-button @click="logOut" variant="dark"><b-icon-door-open></b-icon-door-open>Изход</b-button></b-nav-item>
+      </b-navbar-nav>
     </b-navbar>
     <div>
       <router-view/>
@@ -52,16 +40,11 @@ export default {
   components: { Basket },
   data () {
     return {
-      nav_bg_variant: 'white',
       basket: new Order(),
       totalPrice: 0,
       show: false,
       initial: true
     }
-  },
-  mounted () {
-    window.addEventListener('scroll', this.handleScroll)
-    this.nav_bg_variant = this.$router.currentRoute.fullPath === '/' ? 'white' : 'transparent'
   },
   computed: {
     loggedIn () {
@@ -99,8 +82,10 @@ export default {
       this.$store.dispatch('auth/logout')
       this.$router.push('/')
       this.$router.go()
+    },
+    redirect (target) {
+      this.$router.push(target)
     }
-
   }
 }
 </script>
@@ -116,5 +101,25 @@ export default {
 
 ::-webkit-scrollbar{
   display: none;
+}
+
+.navbar {
+  background: #E8A44A;
+}
+
+.navbar-left {
+  padding-left: 10%;
+}
+
+.navbar-right {
+  padding-right: 10%;
+}
+
+.nav-item1 {
+  color: white;
+  font-weight: bold;
+}
+.nav-item1:hover {
+  border-bottom: 2px solid white;
 }
 </style>
