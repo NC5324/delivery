@@ -29,15 +29,6 @@
   </div>-->
   <div>
     <div class="wrapper">
-      <header>
-        <img src="@/assets/brand-logo.png" alt="Brand Logo"  width="100px" height="150px">
-        <div style="flex: 0 0 auto; margin-top: auto; margin-bottom: auto;">
-          <h1 style="font-family: 'Roboto', sans-serif; color: #EED27F">
-            SELECT <span style="color: #A6191D">*</span> FROM <span style="color: #A6191D">pizza</span><br>
-            WHERE <span style="color: #A6191D">quality = "best"</span>
-          </h1>
-        </div>
-      </header>
       <main>
         <article id="left">
           <div style="background: lightgray; width: 250px; flex: 0 1 250px; margin: 35px auto; border-radius: 50%; z-index: 999">
@@ -173,11 +164,10 @@ header {
 }
 
 main {
-  flex: 1 0 auto;
-
+  flex-basis: 600px;
   background: #E8A44A;
   padding: 0 50px;
-  margin: 30px 10%;
+  margin: auto 10%;
 
   display: flex;
   flex-flow: row nowrap;
