@@ -60,6 +60,7 @@
       >
       </b-pagination>
     </b-container>
+    <page-footer></page-footer>
   </div>
 </template>
 
@@ -67,8 +68,12 @@
 import ProductService from '../services/product-service'
 import OrderItem from '../models/orderItem'
 import Order from '@/models/order'
+import PageFooter from '@/components/PageFooter'
 export default {
   name: 'Menu',
+  components: {
+    PageFooter
+  },
   data () {
     return {
       message: '',

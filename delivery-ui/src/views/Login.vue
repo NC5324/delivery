@@ -1,6 +1,6 @@
 <template>
-  <div class="center-screen top">
-    <b-card style="min-width: 50%" class="login-card">
+  <div class="center-screen top" style="padding: 0 10%;">
+    <b-card style="width: 100%" class="login-card">
       <b-form :state="loginSuccess" v-if="show">
         <b-form-group id="input-group-1" label="Потребителско име:" label-for="input-1">
           <b-form-input id="input-1"
@@ -35,7 +35,6 @@
 
 <script>
 import User from '../models/user'
-
 export default {
   name: 'Login',
   data () {
@@ -86,6 +85,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 100%;
   min-height: 30vh;
 }
 .login-card{
