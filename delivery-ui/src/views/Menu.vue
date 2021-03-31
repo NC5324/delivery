@@ -1,7 +1,6 @@
 <template>
   <div id="content">
-    <div id="header" style="min-height: 20px"></div>
-    <b-container @click="hideBasket" style="background-image: url(https://images.unsplash.com/photo-1524365521362-0a59611ecbf1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80)" class="center-screen">
+    <b-container @click="hideBasket" style="background: #E8A44A; margin: 100px auto;" class="center-screen">
       <b-form id="category and stuff">
         <b-form-group
           v-slot="{ ariaDescribedby }"
@@ -61,7 +60,6 @@
       >
       </b-pagination>
     </b-container>
-    <img height="20px" src="https://i.stack.imgur.com/Vkq2a.png" alt="">
   </div>
 </template>
 
