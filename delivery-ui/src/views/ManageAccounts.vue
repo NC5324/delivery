@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 5% 10%;">
     <b-form id="category and stuff">
       <b-button class="mr-2 mb-2 mt-2" variant="success" @click="resetBlankMember()" v-b-modal.newMember>Нов профил</b-button>
     </b-form>

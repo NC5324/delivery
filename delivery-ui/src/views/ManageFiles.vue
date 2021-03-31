@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 5% 10%;">
     <label class="btn btn-default">
       <input type="file" multiple @change="selectFile" />
     </label>
