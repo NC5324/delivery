@@ -12,18 +12,13 @@
         </div>
       </b-navbar-nav>
 
-      <b-navbar-nav class="ml-auto navbar-right" v-if="!currentUser">
+      <b-navbar-nav class="ml-auto navbar-right">
         <div v-b-toggle.sidebar-basket class="nav-item1" style="display: flex; flex-direction: column; justify-content: space-around">
           <img src="@/assets/basket.svg" alt="Basket" width="30px" height="30px">
         </div>
         <div v-on:click="redirect('/login')" class="nav-item1" style="margin-left: 10px; display: flex; flex-direction: column; justify-content: space-around; cursor: pointer;">
           <img src="@/assets/profile.svg" alt="Profile" width="30px" height="30px">
         </div>
-      </b-navbar-nav>
-      <b-navbar-nav class="ml-auto" v-if="currentUser">
-        <b-nav-item right v-b-toggle.sidebar-basket><b-icon-basket2></b-icon-basket2></b-nav-item>
-        <b-nav-item right href="/profile"><b-button variant="dark"><b-icon-person></b-icon-person>Профил</b-button></b-nav-item>
-        <b-nav-item right><b-button @click="logOut" variant="dark"><b-icon-door-open></b-icon-door-open>Изход</b-button></b-nav-item>
       </b-navbar-nav>
     </b-navbar>
     <div>
