@@ -11,4 +11,4 @@ Technologies used for the front-end representation are HTML, CSS, JS Vuejs and B
 
 I'm attaching a few images showcasing the structure of the application.
 
-![Responsiveness](https://github.com/NC5324/delivery/main/responsive.png?raw=true)
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
