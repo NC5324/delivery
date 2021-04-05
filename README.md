@@ -11,4 +11,23 @@ Technologies used for the front-end representation are HTML, CSS, JS Vuejs and B
 
 I'm attaching a few images showcasing the structure of the application.
 
+<h2>Responsive Layout</h2>
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+
+<h2>Homepage</h2>
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+  
+<h2>Menu</h2>
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+  
+<h2>Profile page</h2>
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+  
+<h2>Page for managing orders</h2>
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+  
+<h2>Page for managing products</h2>
+![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+  
+<h2>Page for managing products</h2>
 ![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
