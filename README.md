@@ -2,7 +2,7 @@
 
 This is a pizza delivery web application that I did for my Java programming classes in 3rd semester of university.
 
-The UI consists of a fixed navigation bar with Home, Menu, About us tabs. A toggle for the shopping cart and a link redirecting to the login page (or profile page if already logged in).
+The UI consists of a fixed navigation bar with Home and Menu tabs. A toggle for the shopping cart and a link redirecting to the login page (or profile page if already logged in).
 Additional tabs for managing product menu items, profiles, orders and files appear according to the authorization role of the user.
 
 The application achieves authentication and authorization through Spring Security. The user can browse freely without an account and add products to their shopping cart but needs to sign-up to actually complete an order.
