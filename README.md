@@ -12,22 +12,33 @@ Technologies used for the front-end representation are HTML, CSS, JS Vuejs and B
 I'm attaching a few images showcasing the structure of the application.
 
 <h2>Responsive Layout</h2>
+
 ![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
 
 <h2>Homepage</h2>
-![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+
+![Homepage](https://github.com/NC5324/delivery/blob/main/demo-img/homepage.png?raw=true)
   
 <h2>Menu</h2>
-![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+
+![Menu](https://github.com/NC5324/delivery/blob/main/demo-img/menu.png?raw=true)
+
+<h2>Shopping cart sidebar</h2>
+
+![Shopping cart](https://github.com/NC5324/delivery/blob/main/demo-img/cart.png?raw=true)
   
 <h2>Profile page</h2>
-![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+
+![Profile page](https://github.com/NC5324/delivery/blob/main/demo-img/profile.png?raw=true)
   
 <h2>Page for managing orders</h2>
-![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+
+![Manage orders page](https://github.com/NC5324/delivery/blob/main/demo-img/manage-orders.png?raw=true)
   
 <h2>Page for managing products</h2>
-![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+
+![Manage products page](https://github.com/NC5324/delivery/blob/main/demo-img/manage-products.png?raw=true)
   
-<h2>Page for managing products</h2>
-![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
+<h2>Page for managing files</h2>
+
+![Manage files page](https://github.com/NC5324/delivery/blob/main/demo-img/manage-files.png?raw=true)
