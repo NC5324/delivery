@@ -9,8 +9,6 @@ The application achieves authentication and authorization through Spring Securit
 
 Technologies used for the front-end representation are HTML, CSS, JS Vuejs and Bootstrap components for Vue. As for the back-end they are Java, Spring Boot, Spring Security. (DB is Postgres)
 
-I'm attaching a few images showcasing the structure of the application.
-
 <h2>Responsive Layout</h2>
 
 ![Responsiveness](https://github.com/NC5324/delivery/blob/main/demo-img/responsive.png?raw=true)
